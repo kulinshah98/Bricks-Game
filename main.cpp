@@ -171,71 +171,15 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 void draw ()
 {
 
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // use the loaded shader program
   // Don't change unless you know what you are doing
   glUseProgram (programID);
 
-  // Eye - Location of camera. Don't change unless you are sure!!
-  glm::vec3 eye ( 5*cos(camera_rotation_angle*M_PI/180.0f), 0, 5*sin(camera_rotation_angle*M_PI/180.0f) );
-  // Target - Where is the camera looking at.  Don't change unless you are sure!!
-  glm::vec3 target (0, 0, 0);
-  // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
-  glm::vec3 up (0, 1, 0);
-
-  // Compute Camera matrix (view)
-  // Matrices.view = glm::lookAt( eye, target, up ); // Rotating Camera for 3D
-  //  Don't change unless you are sure!!
-  Matrices.view = glm::lookAt(glm::vec3(0,0,3), glm::vec3(0,0,0), glm::vec3(0,1,0)); // Fixed camera for 2D (ortho) in XY plane
-
-  // Compute ViewProject matrix as view/camera might not be changed for this frame (basic scenario)
-  //  Don't change unless you are sure!!
-  glm::mat4 VP = Matrices.projection * Matrices.view;
-
-  // Send our transformation to the currently bound shader, in the "MVP" uniform
-  // For each model you render, since the MVP will be different (at least the M part)
-  //  Don't change unless you are sure!!
-  glm::mat4 MVP;	// MVP = Projection * View * Model
-
-  // Load identity to model matrix
-  /*Matrices.model = glm::mat4(1.0f);
-
-  /* Render your scene */
-/*  triangle_x=triangle_x+0.005f;
-
-  glm::mat4 translateTriangle = glm::translate (glm::vec3(-(float)triangle_x, 0.0f, 0.0f)); // glTranslatef
-  glm::mat4 rotateTriangle = glm::rotate((float)(triangle_rotation*M_PI/180.0f), glm::vec3(0,0,1));  // rotate about vector (1,0,0)
-  glm::mat4 triangleTransform = translateTriangle * rotateTriangle;
-  Matrices.model *= triangleTransform;
-  MVP = VP * Matrices.model; // MVP = p * V * M
-
-  //  Don't change unless you are sure!!
-  glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-
-  // draw3DObject draws the VAO given to it using current MVP matrix
-  draw3DObject(triangle);
-*/
-//  drawObject(VP, glm::vec3(-(float)triangle_x, 0.0f, 0.0f), (float)(triangle_rotation*M_PI/180.0f), glm::vec3(0,0,1), glm::vec3(1,1,1));
-  Matrices.model = glm::mat4(1.0f);
-  //glm::mat4 MVP;
-  glm::mat4 translateRectangle = glm::translate (glm::vec3(2, 0, 0));        // glTranslatef
-  glm::mat4 rotateRectangle = glm::rotate((float)(rectangle_rotation*M_PI/180.0f), glm::vec3(0,0,1)); // rotate about vector (-1,1,1)
-  Matrices.model *= (translateRectangle * rotateRectangle);
-  MVP = VP * Matrices.model;
-  glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-
-  // draw3DObject draws the VAO given to it using current MVP matrix
-  draw3DObject(rectangle);
+  canon_obj.drawCanon( glm::vec3(0,0,1) );
 
   // Swap the frame buffers
   glutSwapBuffers ();
-
-  // Increment angles
-  float increments = 1;
-
-  //camera_rotation_angle++; // Simulating camera rotation
-  triangle_rotation = triangle_rotation + increments*triangle_rot_dir*triangle_rot_status;
-  rectangle_rotation = rectangle_rotation + increments*rectangle_rot_dir*rectangle_rot_status;
-
 }
 
 /* Executed when the program is idle (no I/O activity) */
@@ -259,7 +203,6 @@ void drawBricks()
   {
     map_brick[iterator->first].drawSingleBrick();
   }
-
 }
 
 void idle () {
@@ -270,7 +213,6 @@ void idle () {
     draw (); // drawing same scene
     //drawBricks();
   //  printf("Hello\n");
-    canon_obj.drawCanon( glm::vec3(0,0,1) );
 }
 
 /* Process menu option 'op' */
@@ -336,7 +278,7 @@ int main (int argc, char** argv)
 	int height = 600;
 
     initGLUT (argc, argv, width, height);
-map_brick.clear();
+    map_brick.clear();
     addGLUTMenus ();
 
 	initGL (width, height);

@@ -32,11 +32,6 @@ void laser_canon::drawCanon (glm::vec3 rot_coord)
 {
   //printf("Draw Cannon\n");
 
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // use the loaded shader program
-  // Don't change unless you know what you are doing
-  glUseProgram (programID);
-
   // Eye - Location of camera. Don't change unless you are sure!!
   glm::vec3 eye ( 5*cos(camera_rotation_angle*M_PI/180.0f), 0, 5*sin(camera_rotation_angle*M_PI/180.0f) );
   // Target - Where is the camera looking at.  Don't change unless you are sure!!
