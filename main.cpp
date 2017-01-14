@@ -110,7 +110,7 @@ void createTriangle ()
   };
 
   // create3DObject creates and returns a handle to a VAO that can be used later
-  triangle = create3DObject(GL_TRIANGLES, 3, vertex_buffer_data, color_buffer_data, GL_LINE);
+  //triangle = create3DObject(GL_TRIANGLES, 3, vertex_buffer_data, color_buffer_data, GL_LINE);
 }
 
 void createRectangle ()
@@ -137,7 +137,7 @@ void createRectangle ()
   };
 
   // create3DObject creates and returns a handle to a VAO that can be used later
-  rectangle = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
+//  rectangle = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
 }
 
 /* Render the scene with openGL */
@@ -177,31 +177,44 @@ void draw ()
   glUseProgram (programID);
 
   canon_obj.drawCanon( glm::vec3(0,0,1) );
-
+  //makeBrick();
+  drawBricks();
   // Swap the frame buffers
   glutSwapBuffers ();
 }
 
 /* Executed when the program is idle (no I/O activity) */
 
-void makeBrick()
+void makeBrick(int value)
 {
+  //printf("%d\n",id_brick);
   int num=rand();
+  //printf("%d\n",num);
   if(level==1 && num%7==0)
   {
     brick_class brick_obj;
     map_brick[id_brick]=brick_obj;
     map_brick[id_brick].init(id_brick);
     map_brick[id_brick].createBrick();
+    id_brick++;
   }
+   glutPostRedisplay();
+
+   glutTimerFunc(150, makeBrick, 0);
 }
 
 void drawBricks()
 {
-  typedef map<int,brick_class>::iterator it_type;
-  for( it_type iterator = map_brick.begin (); iterator != map_brick.end (); iterator++)
+  if(id_brick>0)
   {
-    map_brick[iterator->first].drawSingleBrick();
+    typedef map<int,brick_class>::iterator it_type;
+    for( it_type iterator=map_brick.begin(); iterator != map_brick.end(); iterator++)
+    {
+    //  printf("%d",iterator->first);
+    //  printf("***********************\n");
+      map_brick[iterator->first].drawSingleBrick();
+      //printf("hi\n");
+    }
   }
 }
 
@@ -264,8 +277,6 @@ void initGL (int width, int height)
 	glEnable (GL_DEPTH_TEST);
 	glDepthFunc (GL_LEQUAL);
 
-	//createRectangle ();
-
 	cout << "VENDOR: " << glGetString(GL_VENDOR) << endl;
 	cout << "RENDERER: " << glGetString(GL_RENDERER) << endl;
 	cout << "VERSION: " << glGetString(GL_VERSION) << endl;
@@ -276,7 +287,7 @@ int main (int argc, char** argv)
 {
 	int width = 1000;
 	int height = 600;
-
+  srand(time(NULL));
     initGLUT (argc, argv, width, height);
     map_brick.clear();
     addGLUTMenus ();

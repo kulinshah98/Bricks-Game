@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -78,3 +80,5 @@ extern float triangle_x;
 extern VAO *triangle, *rectangle;
 
 extern int id_num;
+
+void makeBrick(int value);

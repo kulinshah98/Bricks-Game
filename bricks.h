@@ -1,7 +1,10 @@
 #include <iostream>
+#include <stdio.h>
+#include <time.h>
 #include <cmath>
 #include <fstream>
 #include <vector>
+#include <stdlib.h>
 #include <map>
 
 #include <GL/glew.h>
@@ -12,6 +15,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+using namespace std;
 
 struct VAO {
     GLuint VertexArrayID;
@@ -36,7 +41,7 @@ extern GLuint programID;
 extern float camera_rotation_angle;
 
 
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode);
 
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode);
 
@@ -49,8 +54,8 @@ void draw3DObject (struct VAO* vao);
 class brick_class
 {
 public:
-  int obj_type,id;
-  float angle,pos_x,pos_y;
+  int obj_type,id,col_brick;
+  float angle,pos_x,pos_y,trans_x,trans_y;
   VAO * brick;
 
 public:

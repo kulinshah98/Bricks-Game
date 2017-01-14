@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -60,7 +62,7 @@ void addGLUTMenus ();
 
 void initGL (int width, int height);
 
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
 
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode=GL_FILL);
 
@@ -121,8 +123,8 @@ extern laser_canon canon_obj;
 class brick_class
 {
 public:
-  int obj_type,id;
-  float angle,pos_x,pos_y;
+  int obj_type,id,col_brick;
+  float angle,pos_x,pos_y,trans_x,trans_y;
   VAO * brick;
 
 public:
@@ -135,6 +137,6 @@ public:
 
 extern std::map<int,brick_class> map_brick;
 
-void makeBrick();
+void makeBrick(int value);
 
 void drawBricks();

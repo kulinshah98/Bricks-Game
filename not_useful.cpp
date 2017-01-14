@@ -82,7 +82,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 /* Generate VAO, VBOs and return VAO handle */
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode)
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode)
 {
     struct VAO* vao = new struct VAO;
     vao->PrimitiveMode = primitive_mode;
@@ -209,6 +209,7 @@ void initGLUT (int& argc, char** argv, int width, int height)
     glutMotionFunc (mouseMotion);
 
     glutReshapeFunc (reshapeWindow);
+		glutTimerFunc(150, makeBrick, 0);
 
     glutDisplayFunc (draw); // function to draw when active
     glutIdleFunc (idle); // function to draw when idle (no I/O activity)

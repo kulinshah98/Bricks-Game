@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -38,7 +40,7 @@ extern GLuint programID;
 
 
 
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode);
 
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode);
 

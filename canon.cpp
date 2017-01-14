@@ -14,7 +14,7 @@ void laser_canon::createCanon ()
     -4.0,-0.25,0  // vertex 1
   };
 
-  static const GLfloat color_buffer_data [] = {
+   GLfloat color_buffer_data [] = {
     0,0,0, // color 1
     0,0,0, // color 2
     0,0,0, // color 3
