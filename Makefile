@@ -1,7 +1,7 @@
 CC=g++
 all: mygame
-mygame: main.o not_useful.o variables.o canon.o bricks.o
-	$(CC) -o mygame not_useful.o main.o variables.o canon.o bricks.o -lGL -lGLU -lGLEW -lglut
+mygame: main.o not_useful.o variables.o canon.o bricks.o baskets.o
+	$(CC) -o mygame not_useful.o main.o variables.o canon.o bricks.o baskets.o -lGL -lGLU -lGLEW -lglut
 
 not_useful.o: not_useful.cpp not_useful.h
 	$(CC) -c not_useful.cpp -lGL -lGLU -lGLEW -lglut
@@ -18,5 +18,8 @@ canon.o: canon.cpp canon.h
 bricks.o: bricks.cpp bricks.h
 	$(CC) -c bricks.cpp -lGL -lGLU -lGLEW -lglut
 
+baskets.o: baskets.cpp baskets.h
+	$(CC) -c baskets.cpp -lGL -lGLU -lGLEW -lglut
+
 clean:
-	rm main.o variables.o not_useful.o canon.o bricks.o
+	rm main.o variables.o not_useful.o canon.o bricks.o baskets.o

@@ -10,6 +10,20 @@ void keyboardDown (unsigned char key, int x, int y)
         case 'q':
         case 27: //ESC
             exit (0);
+        case 's':
+            s_held = 1;
+            break;
+
+        case 'f':
+            f_held = 1;
+            break;
+
+        case 'a':
+            a_held = 1;
+            break;
+        case 'd':
+            d_held = 1;
+            break;
         default:
             break;
     }
@@ -19,36 +33,20 @@ void keyboardDown (unsigned char key, int x, int y)
 void keyboardUp (unsigned char key, int x, int y)
 {
     switch (key) {
-        case 'c':
-        case 'C':
-            rectangle_rot_status = !rectangle_rot_status;
-            break;
-
-        case 'p':
-        case 'P':
-            triangle_rot_status = !triangle_rot_status;
-            break;
-
-        case 'x':
-            // do something
-            break;
-
         case 's':
-            canon_obj.increaseY();
-            printf("UP\n");
+            s_held = 0;
             break;
 
         case 'f':
-            canon_obj.decreaseY();
-            printf("DOWN\n");
+            f_held = 0;
             break;
 
         case 'a':
-            canon_obj.tiltUp();
-            printf("Tilt UP\n");
+            a_held = 0;
             break;
         case 'd':
-            canon_obj.tiltDown();
+            d_held = 0;
+            break;
         default:
             break;
     }
@@ -58,11 +56,63 @@ void keyboardUp (unsigned char key, int x, int y)
 /* Executed when a special key is pressed */
 void keyboardSpecialDown (int key, int x, int y)
 {
+  switch (key){
+      case GLUT_KEY_LEFT:
+        if(glutGetModifiers() == GLUT_ACTIVE_ALT)
+        {
+          green_basket_decrease = 1;
+        }
+        else if( glutGetModifiers() == GLUT_ACTIVE_CTRL)
+        {
+          red_basket_decrease = 1;
+        }
+        break;
+
+      case GLUT_KEY_RIGHT:
+        if(glutGetModifiers() == GLUT_ACTIVE_ALT)
+        {
+          green_basket_increase = 1;
+        }
+        else if( glutGetModifiers() == GLUT_ACTIVE_CTRL)
+        {
+          red_basket_increase = 1;
+        }
+        break;
+
+      default:
+        break;
+  }
 }
 
 /* Executed when a special key is released */
 void keyboardSpecialUp (int key, int x, int y)
 {
+  switch (key){
+      case GLUT_KEY_LEFT:
+        if(glutGetModifiers() == GLUT_ACTIVE_ALT)
+        {
+          green_basket_decrease = 0;
+        }
+        else if( glutGetModifiers() == GLUT_ACTIVE_CTRL)
+        {
+          red_basket_decrease = 0;
+        }
+        break;
+
+      case GLUT_KEY_RIGHT:
+        if(glutGetModifiers() == GLUT_ACTIVE_ALT)
+        {
+          green_basket_increase = 0;
+        }
+        else if( glutGetModifiers() == GLUT_ACTIVE_CTRL)
+        {
+          red_basket_increase = 0;
+        }
+        break;
+
+      default:
+        break;
+  }
 }
 
 /* Executed when a mouse button 'button' is put into state 'state'
@@ -89,55 +139,6 @@ void mouseClick (int button, int state, int x, int y)
 /* Executed when the mouse moves to position ('x', 'y') */
 void mouseMotion (int x, int y)
 {
-}
-
-// Creates the triangle object used in this sample code
-void createTriangle ()
-{
-  /* ONLY vertices between the bounds specified in glm::ortho will be visible on screen */
-
-  /* Define vertex array as used in glBegin (GL_TRIANGLES) */
-  static const GLfloat vertex_buffer_data [] = {
-    0, 1,0, // vertex 0
-    -1,-1,0, // vertex 1
-    1,-1,0, // vertex 2
-  };
-
-  static const GLfloat color_buffer_data [] = {
-    1,0,0, // color 0
-    0,1,0, // color 1
-    0,0,1, // color 2
-  };
-
-  // create3DObject creates and returns a handle to a VAO that can be used later
-  //triangle = create3DObject(GL_TRIANGLES, 3, vertex_buffer_data, color_buffer_data, GL_LINE);
-}
-
-void createRectangle ()
-{
-  // GL3 accepts only Triangles. Quads are not supported static
-  const GLfloat vertex_buffer_data [] = {
-    -1.2,-1,0, // vertex 1
-    1.2,-1,0, // vertex 2
-    1.2, 1,0, // vertex 3
-
-    1.2, 1,0, // vertex 3
-    -1.2, 1,0, // vertex 4
-    -1.2,-1,0  // vertex 1
-  };
-
-  static const GLfloat color_buffer_data [] = {
-    1,0,0, // color 1
-    0,0,1, // color 2
-    0,1,0, // color 3
-
-    0,1,0, // color 3
-    0.3,0.3,0.3, // color 4
-    1,0,0  // color 1
-  };
-
-  // create3DObject creates and returns a handle to a VAO that can be used later
-//  rectangle = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
 }
 
 /* Render the scene with openGL */
@@ -175,14 +176,56 @@ void draw ()
   // use the loaded shader program
   // Don't change unless you know what you are doing
   glUseProgram (programID);
-
+  changeBasketPosition();
+  changeCanonPosition();
   canon_obj.drawCanon( glm::vec3(0,0,1) );
   //makeBrick();
   drawBricks();
+  red_basket.drawBasket();
+  green_basket.drawBasket();
   // Swap the frame buffers
   glutSwapBuffers ();
 }
 
+void changeBasketPosition()
+{
+  if(red_basket_increase==1)
+  {
+    red_basket.increaseX();
+  }
+  if(red_basket_decrease==1)
+  {
+    red_basket.decreaseX();
+  }
+  if(green_basket_increase==1)
+  {
+    green_basket.increaseX();
+  }
+  if(green_basket_decrease==1)
+  {
+    green_basket.decreaseX();
+  }
+}
+
+void changeCanonPosition()
+{
+  if(a_held)
+  {
+    canon_obj.tiltUp();
+  }
+  if(s_held)
+  {
+    canon_obj.increaseY();
+  }
+  if(d_held)
+  {
+    canon_obj.tiltDown();
+  }
+  if(f_held)
+  {
+    canon_obj.decreaseY();
+  }
+}
 /* Executed when the program is idle (no I/O activity) */
 
 void makeBrick(int value)
@@ -258,9 +301,16 @@ void addGLUTMenus ()
 void initGL (int width, int height)
 {
 	// Create the models
-//	createTriangle (); // Generate the VAO, VBOs, vertices data & copy into the array buffer
+//	Create Canon
   canon_obj.createCanon();
   canon_obj.init();
+
+// Create Baskets
+  red_basket.init(0);
+  red_basket.createBasket();
+
+  green_basket.init(1);
+  green_basket.createBasket();
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );

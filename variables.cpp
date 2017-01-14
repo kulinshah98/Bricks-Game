@@ -41,7 +41,7 @@ float rectangle_rot_dir = 1;
 bool triangle_rot_status = true;
 bool rectangle_rot_status = true;
 int id_brick=0;
-int level=1;
+int level=1,green_basket_decrease=0,red_basket_increase=0,red_basket_decrease=0,green_basket_increase=0,s_held=0,a_held=0,d_held=0,f_held=0;
 
 float camera_rotation_angle = 90;
 float rectangle_rotation = 0;
@@ -93,3 +93,25 @@ public:
 #endif
 
 map<int,brick_class> map_brick;
+
+#ifndef BASKET_H
+#define BASKET_H
+
+class basket_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y,trans_x,trans_y;
+  VAO * basket;
+
+public:
+  void createBasket();
+  void init(int green);
+  void drawBasket();
+  void increaseX();
+  void decreaseX();
+};
+
+#endif
+
+basket_class red_basket, green_basket;

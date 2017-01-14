@@ -76,6 +76,10 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 void keyPressed(unsigned char key, int x, int y);
 
+void changeBasketPosition();
+
+void changeCanonPosition();
+
 extern GLuint programID;
 
 extern float rectangle_rot_dir;
@@ -88,7 +92,7 @@ extern float rectangle_rotation;
 extern float triangle_rotation;
 extern float triangle_x;
 
-extern int id_num,level,id_brick;
+extern int id_num,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
 
 extern VAO *triangle, *rectangle;
 
@@ -140,3 +144,25 @@ extern std::map<int,brick_class> map_brick;
 void makeBrick(int value);
 
 void drawBricks();
+
+#ifndef BASKET_H
+#define BASKET_H
+
+class basket_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y,trans_x,trans_y;
+  VAO * basket;
+
+public:
+  void createBasket();
+  void init(int green);
+  void drawBasket();
+  void increaseX();
+  void decreaseX();
+};
+
+#endif
+
+extern basket_class red_basket, green_basket;

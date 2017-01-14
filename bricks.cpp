@@ -84,11 +84,11 @@ void brick_class::drawSingleBrick()
 
 //  printf("%d %d %d\n",trans_coord.x, trans_coord.y,trans_coord.z);
   trans_y-=0.01f;
-  glm::mat4 translateCanon = glm::translate (glm::vec3(0,trans_y,0)); // glTranslatef
+  glm::mat4 translateBrick = glm::translate (glm::vec3(0,trans_y,0)); // glTranslatef
 
-  glm::mat4 rotateCanon = glm::translate(glm::vec3(-4.0,0,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(1,0,0)) * glm::translate(glm::vec3(4.0,0,0));  // rotate about vector (1,0,0)
-  glm::mat4 canonTransform = translateCanon * rotateCanon;
-  Matrices.model *= canonTransform;
+  glm::mat4 rotateBrick = glm::translate(glm::vec3(-4.0,0,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(1,0,0)) * glm::translate(glm::vec3(4.0,0,0));  // rotate about vector (1,0,0)
+  glm::mat4 brickTransform = translateBrick * rotateBrick;
+  Matrices.model *= brickTransform;
   MVP = VP * Matrices.model; // MVP = p * V * M
 
   //  Don't change unless you are sure!!
