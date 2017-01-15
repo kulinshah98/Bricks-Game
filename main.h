@@ -82,6 +82,8 @@ void changeBasketPosition();
 
 void changeCanonPosition();
 
+void checkLaserBrickCollision();
+
 extern GLuint programID;
 
 extern float rectangle_rot_dir;

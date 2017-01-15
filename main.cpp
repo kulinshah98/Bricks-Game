@@ -180,13 +180,15 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 
 void draw ()
 {
+  float time_interval=0.006;
+  time_interval=time_interval*(id_brick/10 + 1);
   if(game_over==1)
   {
     printf("%d\n",score-5);
     exit(0);
   }
   now = ((float )clock())/CLOCKS_PER_SEC;
-  if(space_held && now - prev_space > 0.004)
+  if(space_held && now - prev_space > time_interval)
   {
     laser_class laser_obj;
     map_laser[id_laser]=laser_obj;
@@ -196,7 +198,7 @@ void draw ()
     prev_space=now;
   }
 
-  if(now - prev_brick > 0.03 )
+  if(now - prev_brick > time_interval*5 )
   {
     makeBrick();
     prev_brick=now;
@@ -223,6 +225,28 @@ void draw ()
 void checkCollisions()
 {
   checkBrickBasketCollision();
+  checkLaserBrickCollision();
+}
+
+void checkLaserBrickCollision()
+{
+  typedef map<int,laser_class>::iterator it_type1;
+  typedef map<int,brick_class>::iterator it_type2;
+
+  for( it_type1 iterator1=map_laser.begin(); iterator1 != map_laser.end(); iterator1++)
+  {
+    for(it_type2 iterator2=map_brick.begin(); iterator2 != map_brick.end(); iterator2++)
+    {
+      if( abs( (iterator1->second).pos_x + (iterator1->second).trans_x - (iterator2->second).pos_x - (iterator2->second).trans_x) < 0.22 &&
+          abs( (iterator1->second).pos_y + (iterator1->second).trans_y - (iterator2->second).pos_y - (iterator2->second).trans_y) < 0.22)
+          {
+            cout << "Collision between laser and brick\n";
+              map_brick.erase(iterator2);
+              map_laser.erase(iterator1);
+              break;
+          }
+    }
+  }
 }
 
 void checkBrickBasketCollision()
@@ -241,12 +265,10 @@ void checkBrickBasketCollision()
       score+=5;
       num_brick--;
       map_brick.erase(iterator->first);
-      //cout << iterator->first << " " << (iterator->second).col_brick << endl;
     }
     else if(abs( 1 + green_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.6  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
     {
       printf("GREEN COLLIDE\n");
-      //printf("%d\n",map_brick[iterator->first].col_brick);
       if( map_brick[iterator->first].col_brick != 2)
       {
         game_over=1;
@@ -307,10 +329,7 @@ void drawLasers()
     typedef map<int,laser_class>::iterator it_type;
     for( it_type iterator=map_laser.begin(); iterator != map_laser.end(); iterator++)
     {
-    //  printf("%d",iterator->first);
-    //  printf("***********************\n");
       map_laser[iterator->first].drawSingleLaser();
-      //printf("hi\n");
     }
   }
 }
