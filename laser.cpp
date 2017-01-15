@@ -1,17 +1,16 @@
-#include "canon.h"
+#include "laser.h"
 
 
-void laser_canon::createCanon ()
+void laser_class::createLaser()
 {
-  // GL3 accepts only Triangles. Quads are not supported static
   const GLfloat vertex_buffer_data [] = {
-    -4.0,-0.25,0, // vertex 1
-    -3.2,-0.25,0, // vertex 2
-    -3.2, 0.25,0, // vertex 3
+    pos_x - 0.12, pos_y - 0.02, 0, // vertex 1
+    pos_x + 0.12, pos_y - 0.02, 0, // vertex 2
+    pos_x + 0.12, pos_y + 0.02, 0, // vertex 3
 
-    -3.2, 0.25,0, // vertex 3
-    -4.0, 0.25,0, // vertex 4
-    -4.0,-0.25,0  // vertex 1
+    pos_x + 0.12, pos_y + 0.02, 0, // vertex 3
+    pos_x - 0.12, pos_y + 0.02, 0, // vertex 4
+    pos_x - 0.12, pos_y - 0.02, 0  // vertex 1
   };
 
    GLfloat color_buffer_data [] = {
@@ -24,14 +23,21 @@ void laser_canon::createCanon ()
     0,0,1  // color 1
   };
   // create3DObject creates and returns a handle to a VAO that can be used later
-  canon = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
+  laser = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
 }
 
-void laser_canon::drawCanon (glm::vec3 rot_coord)
+void laser_class::init( int id_laser, float posx, float posy, float canon_angle)
 {
-  //printf("Draw Cannon\n");
+  angle = canon_angle;
+  id = id_laser;
+  pos_x = posx - 3.6 + 0.4*cos(canon_angle*M_PI/180.0f);
+  pos_y = posy + 0.4*sin(canon_angle*M_PI/180.0f);
+  trans_x = 0;
+  trans_y = 0;
+}
 
-  // Eye - Location of camera. Don't change unless you are sure!!
+void laser_class::drawSingleLaser()
+{
   glm::vec3 eye ( 5*cos(camera_rotation_angle*M_PI/180.0f), 0, 5*sin(camera_rotation_angle*M_PI/180.0f) );
   // Target - Where is the camera looking at.  Don't change unless you are sure!!
   glm::vec3 target (0, 0, 0);
@@ -56,50 +62,17 @@ void laser_canon::drawCanon (glm::vec3 rot_coord)
   Matrices.model = glm::mat4(1.0f);
 
   /* Render your scene */
-
-//  printf("%d %d %d\n",trans_coord.x, trans_coord.y,trans_coord.z);
-  glm::mat4 translateCanon = glm::translate (glm::vec3(pos_x,pos_y,0)); // glTranslatef
-
-  glm::mat4 rotateCanon = glm::translate(glm::vec3(-4.0,0,0)) * glm::rotate((float)(angle*M_PI/180.0f), rot_coord) * glm::translate(glm::vec3(4.0,0,0));  // rotate about vector (1,0,0)
-  glm::mat4 canonTransform = translateCanon * rotateCanon;
-  Matrices.model *= canonTransform;
+  trans_y = trans_y + 0.05*sin(angle*M_PI/180.0f);
+  trans_x = trans_x + 0.05*cos(angle*M_PI/180.0f);
+  glm::mat4 translateLaser = glm::translate (glm::vec3( trans_x + 0.12*cos(angle*M_PI/180.0f), trans_y+ 0.62*sin(angle*M_PI/180.0f), 0)); // glTranslatef
+  glm::mat4 rotateLaser = glm::translate(glm::vec3(pos_x,pos_y,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(0,0,1)) * glm::translate(glm::vec3(-pos_x, -pos_y, 0));  // rotate about vector (1,0,0)
+  glm::mat4 laserTransform = translateLaser * rotateLaser;
+  Matrices.model *= laserTransform;
   MVP = VP * Matrices.model; // MVP = p * V * M
 
   //  Don't change unless you are sure!!
   glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
   // draw3DObject draws the VAO given to it using current MVP matrix
-  draw3DObject(canon);
-
-}
-
-void laser_canon::init()
-{
-  pos_x=0;
-  pos_y=0;
-  angle=0.0f;
-}
-
-void laser_canon::increaseY()
-{
-  pos_y=pos_y+0.05;
-  printf("%f",pos_y);
-}
-
-void laser_canon::decreaseY()
-{
-  pos_y=pos_y-0.05;
-  printf("%f",pos_y);
-}
-
-void laser_canon::tiltUp()
-{
-  angle=angle+1;
-  printf("%f Up\n",angle);
-}
-
-void laser_canon::tiltDown()
-{
-  angle=angle-1;
-  printf("%f Down\n",angle);
+  draw3DObject(laser);
 }

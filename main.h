@@ -90,9 +90,10 @@ extern bool rectangle_rot_status;
 extern float camera_rotation_angle;
 extern float rectangle_rotation;
 extern float triangle_rotation;
-extern float triangle_x;
+extern float triangle_x,now,prev;
 
-extern int id_num,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
+extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
+extern int space_held;
 
 extern VAO *triangle, *rectangle;
 
@@ -145,6 +146,8 @@ void makeBrick(int value);
 
 void drawBricks();
 
+void drawLasers();
+
 #ifndef BASKET_H
 #define BASKET_H
 
@@ -166,3 +169,24 @@ public:
 #endif
 
 extern basket_class red_basket, green_basket;
+
+
+#ifndef LASER_H
+#define LASER_H
+
+class laser_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y,trans_x,trans_y;
+  VAO * laser;
+
+public:
+  void createLaser();
+  void init( int id_laser, float posx, float posy, float canon_angle);
+  void drawSingleLaser();
+};
+
+#endif
+
+extern std::map<int,laser_class> map_laser;

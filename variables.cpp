@@ -40,10 +40,11 @@ float triangle_rot_dir = 1;
 float rectangle_rot_dir = 1;
 bool triangle_rot_status = true;
 bool rectangle_rot_status = true;
-int id_brick=0;
-int level=1,green_basket_decrease=0,red_basket_increase=0,red_basket_decrease=0,green_basket_increase=0,s_held=0,a_held=0,d_held=0,f_held=0;
+int id_brick=0,id_laser=0;
+int level=1,green_basket_decrease=0,red_basket_increase=0,red_basket_decrease=0,green_basket_increase=0;
+int space_held=0,s_held=0,a_held=0,d_held=0,f_held=0;
 
-float camera_rotation_angle = 90;
+float camera_rotation_angle = 90,now=0,prev=0;
 float rectangle_rotation = 0;
 float triangle_rotation = 0;
 float triangle_x = 2.0f;
@@ -115,3 +116,23 @@ public:
 #endif
 
 basket_class red_basket, green_basket;
+
+#ifndef LASER_H
+#define LASER_H
+
+class laser_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y,trans_x,trans_y;
+  VAO * laser;
+
+public:
+  void createLaser();
+  void init( int id_laser, float posx, float posy, float canon_angle);
+  void drawSingleLaser();
+};
+
+#endif
+
+map<int,laser_class> map_laser;

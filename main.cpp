@@ -10,6 +10,10 @@ void keyboardDown (unsigned char key, int x, int y)
         case 'q':
         case 27: //ESC
             exit (0);
+
+        case 32:
+            space_held=1;
+            break;
         case 's':
             s_held = 1;
             break;
@@ -33,6 +37,10 @@ void keyboardDown (unsigned char key, int x, int y)
 void keyboardUp (unsigned char key, int x, int y)
 {
     switch (key) {
+        case 32:
+            space_held=0;
+            break;
+
         case 's':
             s_held = 0;
             break;
@@ -171,7 +179,19 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 
 void draw ()
 {
-
+  //cout << clock() << endl;
+  now = ((float )clock())/CLOCKS_PER_SEC;
+  //cout << now << endl;
+  if(space_held && now - prev > 0.005)
+  {
+    printf("Hello\n");
+    laser_class laser_obj;
+    map_laser[id_laser]=laser_obj;
+    map_laser[id_laser].init(id_laser, canon_obj.pos_x, canon_obj.pos_y, canon_obj.angle);
+    map_laser[id_laser].createLaser();
+    id_laser++;
+    prev=now;
+  }
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // use the loaded shader program
   // Don't change unless you know what you are doing
@@ -181,6 +201,7 @@ void draw ()
   canon_obj.drawCanon( glm::vec3(0,0,1) );
   //makeBrick();
   drawBricks();
+  drawLasers();
   red_basket.drawBasket();
   green_basket.drawBasket();
   // Swap the frame buffers
@@ -227,6 +248,21 @@ void changeCanonPosition()
   }
 }
 /* Executed when the program is idle (no I/O activity) */
+
+void drawLasers()
+{
+  if(id_laser>0)
+  {
+    typedef map<int,laser_class>::iterator it_type;
+    for( it_type iterator=map_laser.begin(); iterator != map_laser.end(); iterator++)
+    {
+    //  printf("%d",iterator->first);
+    //  printf("***********************\n");
+      map_laser[iterator->first].drawSingleLaser();
+      //printf("hi\n");
+    }
+  }
+}
 
 void makeBrick(int value)
 {
