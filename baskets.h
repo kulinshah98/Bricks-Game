@@ -53,6 +53,7 @@ public:
   void drawBasket();
   void increaseX();
   void decreaseX();
+  float giveX();
 };
 
 #endif

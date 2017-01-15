@@ -28,7 +28,7 @@ void brick_class::createBrick ()
     tmp2=1;
   }
 
-  cout << col_brick << " " << tmp1 << " " << tmp2 << endl;
+  //cout << col_brick << " " << tmp1 << " " << tmp2 << endl;
    GLfloat color_buffer_data [] = {
     tmp1,tmp2,0, // color 1
     tmp1,tmp2,0, // color 2
@@ -83,10 +83,11 @@ void brick_class::drawSingleBrick()
   /* Render your scene */
 
 //  printf("%d %d %d\n",trans_coord.x, trans_coord.y,trans_coord.z);
+//cout << " --> " << trans_y << " " << pos_y << endl;
   trans_y-=0.01f;
   glm::mat4 translateBrick = glm::translate (glm::vec3(0,trans_y,0)); // glTranslatef
 
-  glm::mat4 rotateBrick = glm::translate(glm::vec3(-4.0,0,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(1,0,0)) * glm::translate(glm::vec3(4.0,0,0));  // rotate about vector (1,0,0)
+  glm::mat4 rotateBrick = glm::translate(glm::vec3(pos_x, pos_y,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(1,0,0)) * glm::translate(glm::vec3(-pos_x, -pos_y,0));  // rotate about vector (1,0,0)
   glm::mat4 brickTransform = translateBrick * rotateBrick;
   Matrices.model *= brickTransform;
   MVP = VP * Matrices.model; // MVP = p * V * M

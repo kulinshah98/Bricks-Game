@@ -55,6 +55,7 @@ void keyboardUp (unsigned char key, int x, int y)
         case 'd':
             d_held = 0;
             break;
+
         default:
             break;
     }
@@ -179,33 +180,83 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 
 void draw ()
 {
-  //cout << clock() << endl;
-  now = ((float )clock())/CLOCKS_PER_SEC;
-  //cout << now << endl;
-  if(space_held && now - prev > 0.005)
+  if(game_over==1)
   {
-    printf("Hello\n");
+    printf("%d\n",score-5);
+    exit(0);
+  }
+  now = ((float )clock())/CLOCKS_PER_SEC;
+  if(space_held && now - prev_space > 0.004)
+  {
     laser_class laser_obj;
     map_laser[id_laser]=laser_obj;
     map_laser[id_laser].init(id_laser, canon_obj.pos_x, canon_obj.pos_y, canon_obj.angle);
     map_laser[id_laser].createLaser();
     id_laser++;
-    prev=now;
+    prev_space=now;
+  }
+
+  if(now - prev_brick > 0.03 )
+  {
+    makeBrick();
+    prev_brick=now;
   }
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // use the loaded shader program
   // Don't change unless you know what you are doing
+  checkCollisions();
   glUseProgram (programID);
-  changeBasketPosition();
   changeCanonPosition();
   canon_obj.drawCanon( glm::vec3(0,0,1) );
-  //makeBrick();
+  changeBasketPosition();
   drawBricks();
   drawLasers();
+  mirror1.drawMirror();
+  mirror2.drawMirror();
+  mirror3.drawMirror();
   red_basket.drawBasket();
   green_basket.drawBasket();
   // Swap the frame buffers
   glutSwapBuffers ();
+}
+
+void checkCollisions()
+{
+  checkBrickBasketCollision();
+}
+
+void checkBrickBasketCollision()
+{
+  typedef map<int,brick_class>::iterator it_type;
+  for( it_type iterator=map_brick.begin(); iterator != map_brick.end(); iterator++)
+  {
+    if(abs( -1 + red_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.6  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
+    {
+      printf("RED COLLIDE\n");
+      if( map_brick[iterator->first].col_brick != 1)
+      {
+        game_over=1;
+        printf("game over\n");
+      }
+      score+=5;
+      num_brick--;
+      map_brick.erase(iterator->first);
+      //cout << iterator->first << " " << (iterator->second).col_brick << endl;
+    }
+    else if(abs( 1 + green_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.6  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
+    {
+      printf("GREEN COLLIDE\n");
+      //printf("%d\n",map_brick[iterator->first].col_brick);
+      if( map_brick[iterator->first].col_brick != 2)
+      {
+        game_over=1;
+        printf("game over\n");
+      }
+      score+=5;
+      num_brick--;
+      map_brick.erase(iterator->first);
+    }
+  }
 }
 
 void changeBasketPosition()
@@ -264,35 +315,33 @@ void drawLasers()
   }
 }
 
-void makeBrick(int value)
+void makeBrick()
 {
   //printf("%d\n",id_brick);
   int num=rand();
   //printf("%d\n",num);
-  if(level==1 && num%7==0)
+  if(level==1)
   {
     brick_class brick_obj;
     map_brick[id_brick]=brick_obj;
     map_brick[id_brick].init(id_brick);
     map_brick[id_brick].createBrick();
     id_brick++;
+    num_brick++;
   }
-   glutPostRedisplay();
+   //glutPostRedisplay();
 
-   glutTimerFunc(150, makeBrick, 0);
+   //glutTimerFunc(150, makeBrick, 0);
 }
 
 void drawBricks()
 {
-  if(id_brick>0)
+  if(num_brick>0)
   {
     typedef map<int,brick_class>::iterator it_type;
     for( it_type iterator=map_brick.begin(); iterator != map_brick.end(); iterator++)
     {
-    //  printf("%d",iterator->first);
-    //  printf("***********************\n");
       map_brick[iterator->first].drawSingleBrick();
-      //printf("hi\n");
     }
   }
 }
@@ -301,10 +350,7 @@ void idle () {
     // OpenGL should never stop drawing
     // can draw the same scene or a modified scene
     // clear the color and depth in the frame buffer
-  //  makeBrick();
     draw (); // drawing same scene
-    //drawBricks();
-  //  printf("Hello\n");
 }
 
 /* Process menu option 'op' */
@@ -347,6 +393,15 @@ void initGL (int width, int height)
 
   green_basket.init(1);
   green_basket.createBasket();
+
+  mirror1.init(1);
+  mirror1.createMirror();
+
+  mirror2.init(2);
+  mirror2.createMirror();
+
+  mirror3.init(3);
+  mirror3.createMirror();
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );

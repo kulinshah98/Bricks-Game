@@ -209,7 +209,7 @@ void initGLUT (int& argc, char** argv, int width, int height)
     glutMotionFunc (mouseMotion);
 
     glutReshapeFunc (reshapeWindow);
-		glutTimerFunc(150, makeBrick, 0);
+	//	glutTimerFunc(150, makeBrick, 0);
 
     glutDisplayFunc (draw); // function to draw when active
     glutIdleFunc (idle); // function to draw when idle (no I/O activity)

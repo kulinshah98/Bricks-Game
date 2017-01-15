@@ -15,6 +15,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+using namespace std;
+
 struct VAO {
     GLuint VertexArrayID;
     GLuint VertexBuffer;
@@ -90,10 +92,10 @@ extern bool rectangle_rot_status;
 extern float camera_rotation_angle;
 extern float rectangle_rotation;
 extern float triangle_rotation;
-extern float triangle_x,now,prev;
+extern float triangle_x,now,prev_space,prev_brick;
 
 extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
-extern int space_held;
+extern int space_held,game_over,num_brick,score;
 
 extern VAO *triangle, *rectangle;
 
@@ -142,11 +144,15 @@ public:
 
 extern std::map<int,brick_class> map_brick;
 
-void makeBrick(int value);
+void makeBrick();
 
 void drawBricks();
 
 void drawLasers();
+
+void checkCollisions();
+
+void checkBrickBasketCollision();
 
 #ifndef BASKET_H
 #define BASKET_H
@@ -164,6 +170,7 @@ public:
   void drawBasket();
   void increaseX();
   void decreaseX();
+  float giveX();
 };
 
 #endif
@@ -190,3 +197,24 @@ public:
 #endif
 
 extern std::map<int,laser_class> map_laser;
+
+
+#ifndef MIRROR_H
+#define MIRROR_H
+
+class mirror_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y;
+  VAO * mirror;
+
+public:
+  void createMirror();
+  void init(int id_mir);
+  void drawMirror();
+};
+
+#endif
+
+extern mirror_class mirror1, mirror2, mirror3;

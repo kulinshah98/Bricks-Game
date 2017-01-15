@@ -1,7 +1,7 @@
 CC=g++
 all: mygame
-mygame: main.o not_useful.o variables.o canon.o bricks.o baskets.o laser.o
-	$(CC) -o mygame not_useful.o main.o variables.o canon.o bricks.o baskets.o laser.o -lGL -lGLU -lGLEW -lglut
+mygame: main.o not_useful.o variables.o canon.o bricks.o baskets.o laser.o mirror.o
+	$(CC) -o mygame not_useful.o main.o variables.o canon.o bricks.o baskets.o laser.o mirror.o -lGL -lGLU -lGLEW -lglut
 
 not_useful.o: not_useful.cpp not_useful.h
 	$(CC) -c not_useful.cpp -lGL -lGLU -lGLEW -lglut
@@ -24,5 +24,9 @@ baskets.o: baskets.cpp baskets.h
 laser.o: laser.cpp laser.h
 	$(CC) -c laser.cpp -lGL -lGLU -lGLEW -lglut
 
+
+mirror.o: mirror.cpp mirror.h
+	$(CC) -c mirror.cpp -lGL -lGLU -lGLEW -lglut
+
 clean:
-	rm main.o variables.o not_useful.o canon.o bricks.o baskets.o laser.o
+	rm main.o variables.o not_useful.o canon.o bricks.o baskets.o laser.o mirror.o

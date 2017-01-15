@@ -86,8 +86,12 @@ void basket_class::drawBasket()
   /* Render your scene */
 
 //  printf("%d %d %d\n",trans_coord.x, trans_coord.y,trans_coord.z);
+  /*if(col==0)
+  {
+    cout << trans_x << " " << trans_y << endl;
+  }*/
   glm::mat4 translateBasket = glm::translate (glm::vec3(trans_x,trans_y,0)); // glTranslatef
-  glm::mat4 basketTransform = translateBasket ;
+  glm::mat4 basketTransform = translateBasket;
   Matrices.model *= basketTransform;
   MVP = VP * Matrices.model; // MVP = p * V * M
 
@@ -106,4 +110,9 @@ void basket_class::increaseX()
 void basket_class::decreaseX()
 {
   trans_x-=0.09;
+}
+
+float basket_class::giveX()
+{
+  return trans_x;
 }
