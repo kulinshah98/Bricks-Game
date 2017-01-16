@@ -2,7 +2,7 @@
 
 void brick_class::createBrick ()
 {
-  const GLfloat vertex_buffer_data [] = {
+  GLfloat vertex_buffer_data [] = {
     pos_x-0.10, pos_y-0.10, 0, // vertex 1
     pos_x+0.10, pos_y-0.10, 0, // vertex 2
     pos_x+0.10, pos_y+0.10, 0, // vertex 3

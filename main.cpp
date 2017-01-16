@@ -214,8 +214,8 @@ void draw ()
   drawBricks();
   drawLasers();
   mirror1.drawMirror();
-  mirror2.drawMirror();
-  mirror3.drawMirror();
+//  mirror2.drawMirror();
+  //mirror3.drawMirror();
   red_basket.drawBasket();
   green_basket.drawBasket();
   // Swap the frame buffers
@@ -226,6 +226,16 @@ void checkCollisions()
 {
   checkBrickBasketCollision();
   checkLaserBrickCollision();
+  checkLaserMirrorCollision();
+}
+
+void checkLaserMirrorCollision()
+{
+  typedef map<int,laser_class>::iterator it_type;
+  /*for(it_type iterator = map_laser.begin(); iterator != map_laser.end(); iterator++)
+  {
+    if(mirror1.)
+  }*/
 }
 
 void checkLaserBrickCollision()

@@ -4,7 +4,7 @@
 void laser_canon::createCanon ()
 {
   // GL3 accepts only Triangles. Quads are not supported static
-  const GLfloat vertex_buffer_data [] = {
+  GLfloat vertex_buffer_data [] = {
     -4.0,-0.25,0, // vertex 1
     -3.2,-0.25,0, // vertex 2
     -3.2, 0.25,0, // vertex 3

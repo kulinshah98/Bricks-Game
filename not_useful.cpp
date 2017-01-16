@@ -82,7 +82,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 /* Generate VAO, VBOs and return VAO handle */
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode)
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode)
 {
     struct VAO* vao = new struct VAO;
     vao->PrimitiveMode = primitive_mode;
@@ -121,7 +121,7 @@ struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloa
 }
 
 /* Generate VAO, VBOs and return VAO handle - Common Color for all vertices */
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode)
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode)
 {
     GLfloat* color_buffer_data = new GLfloat [3*numVertices];
     for (int i=0; i<numVertices; i++) {
