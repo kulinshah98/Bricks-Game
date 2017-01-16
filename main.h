@@ -38,68 +38,8 @@ extern GLMatrices Matrices;
 //typedef struct GLMatrices Matrices;
 
 
-void keyboardDown (unsigned char key, int x, int y);
 
-void keyboardUp (unsigned char key, int x, int y);
-
-void keyboardSpecialDown (int key, int x, int y);
-
-void keyboardSpecialUp (int key, int x, int y);
-
-void mouseClick (int button, int state, int x, int y);
-
-void mouseMotion (int x, int y);
-
-void createTriangle ();
-
-void createRectangle ();
-
-void draw ();
-
-void idle ();
-
-void menu(int op);
-
-void addGLUTMenus ();
-
-void initGL (int width, int height);
-
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
-
-struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode=GL_FILL);
-
-void draw3DObject (struct VAO* vao);
-
-void reshapeWindow (int width, int height);
-
-void initGLUT (int& argc, char** argv, int width, int height);
-
-GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
-
-void keyPressed(unsigned char key, int x, int y);
-
-void changeBasketPosition();
-
-void changeCanonPosition();
-
-void checkLaserBrickCollision();
-
-extern GLuint programID;
-
-extern float rectangle_rot_dir;
-extern float triangle_rot_dir;
-extern bool triangle_rot_status;
-extern bool rectangle_rot_status;
-
-extern float camera_rotation_angle;
-extern float rectangle_rotation;
-extern float triangle_rotation;
-extern float triangle_x,now,prev_space,prev_brick;
-
-extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
-extern int space_held,game_over,num_brick,score;
-
-extern VAO *triangle, *rectangle;
+// Defination of classes
 
 #ifndef CANON_H
 #define CANON_H
@@ -123,8 +63,6 @@ public:
 
 #endif
 
-extern laser_canon canon_obj;
-
 
 #ifndef BRICK_H
 #define BRICK_H
@@ -143,20 +81,6 @@ public:
 };
 
 #endif
-
-extern std::map<int,brick_class> map_brick;
-
-void makeBrick();
-
-void drawBricks();
-
-void drawLasers();
-
-void checkCollisions();
-
-void checkBrickBasketCollision();
-
-void checkLaserMirrorCollision();
 
 #ifndef BASKET_H
 #define BASKET_H
@@ -179,7 +103,24 @@ public:
 
 #endif
 
-extern basket_class red_basket, green_basket;
+
+#ifndef MIRROR_H
+#define MIRROR_H
+
+class mirror_class
+{
+public:
+  int obj_type,id;
+  float angle,pos_x,pos_y;
+  VAO * mirror;
+
+public:
+  void createMirror();
+  void init(int id_mir);
+  void drawMirror();
+};
+
+#endif
 
 
 #ifndef LASER_H
@@ -200,25 +141,52 @@ public:
 
 #endif
 
+
+// Defination of Variables
+extern GLuint programID;
+extern bool triangle_rot_status,rectangle_rot_status;
+
+extern float camera_rotation_angle,rectangle_rotation,triangle_rotation,triangle_rot_dir,rectangle_rot_dir;
+extern float triangle_x,now,prev_space,prev_brick;
+
+extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
+extern int space_held,game_over,num_brick,score;
+
+extern VAO *triangle, *rectangle;
+extern laser_canon canon_obj;
+extern std::map<int,brick_class> map_brick;
+extern basket_class red_basket, green_basket;
 extern std::map<int,laser_class> map_laser;
-
-
-#ifndef MIRROR_H
-#define MIRROR_H
-
-class mirror_class
-{
-public:
-  int obj_type,id;
-  float angle,pos_x,pos_y;
-  VAO * mirror;
-
-public:
-  void createMirror();
-  void init(int id_mir);
-  void drawMirror();
-};
-
-#endif
-
 extern mirror_class mirror1, mirror2, mirror3;
+
+//Define Functions
+void keyboardDown (unsigned char key, int x, int y);
+void keyboardUp (unsigned char key, int x, int y);
+void keyboardSpecialDown (int key, int x, int y);
+void keyboardSpecialUp (int key, int x, int y);
+void mouseClick (int button, int state, int x, int y);
+void mouseMotion (int x, int y);
+void createTriangle ();
+void createRectangle ();
+void draw ();
+void idle ();
+void menu(int op);
+void addGLUTMenus ();
+void initGL (int width, int height);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode=GL_FILL);
+void draw3DObject (struct VAO* vao);
+void reshapeWindow (int width, int height);
+void initGLUT (int& argc, char** argv, int width, int height);
+GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
+void keyPressed(unsigned char key, int x, int y);
+void changeBasketPosition();
+void changeCanonPosition();
+void checkLaserBrickCollision();
+void makeBrick();
+void drawBricks();
+void drawLasers();
+void checkCollisions();
+void checkBrickBasketCollision();
+void checkLaserMirrorCollision();
+void draw(VAO * obj, glm::vec3 trans, glm::vec3 pos, float angle_rot);

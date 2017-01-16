@@ -46,6 +46,7 @@ struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* ver
 
 void draw3DObject (struct VAO* vao);
 
+void draw(VAO * obj, glm::vec3 trans, glm::vec3 pos, float angle_rot);
 
 #ifndef MIRROR_H
 #define MIRROR_H

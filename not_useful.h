@@ -65,6 +65,8 @@ void draw ();
 
 void idle ();
 
+void draw(VAO * obj, glm::vec3 trans, glm::vec3 pos, float angle_rot);
+
 extern GLuint programID;
 
 extern float rectangle_rot_dir;
