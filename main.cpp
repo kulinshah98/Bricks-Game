@@ -214,8 +214,8 @@ void draw ()
   drawBricks();
   drawLasers();
   mirror1.drawMirror();
-//  mirror2.drawMirror();
-  //mirror3.drawMirror();
+  mirror2.drawMirror();
+  mirror3.drawMirror();
   red_basket.drawBasket();
   green_basket.drawBasket();
   // Swap the frame buffers
@@ -229,13 +229,51 @@ void checkCollisions()
   checkLaserMirrorCollision();
 }
 
+void reflectLaser(int laser_id, mirror_class mirror_cp)
+{
+  map_laser[laser_id].angle = 180.0f + mirror_cp.angle*2 - map_laser[laser_id].angle;
+}
+
 void checkLaserMirrorCollision()
 {
+  float tmp1,tmp2,x_coord,y_coord;
   typedef map<int,laser_class>::iterator it_type;
-  /*for(it_type iterator = map_laser.begin(); iterator != map_laser.end(); iterator++)
+//  printf("In checkLaserMirrorCollision\n");
+  for(it_type iterator = map_laser.begin(); iterator != map_laser.end(); iterator++)
   {
-    if(mirror1.)
-  }*/
+    // Check Collision Between mirror1 and laser
+    tmp2 = mirror1.pos_y - mirror1.pos_x * tan((float)(90.0f+mirror1.angle)*M_PI/180.0f);
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    tmp1 = (x_coord) * tan((float )(90.0f+mirror1.angle)*M_PI/180.0f) + tmp2;
+    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror1.pos_y + 0.35*cos((float )mirror1.angle*M_PI/180.0f) && y_coord > mirror1.pos_y - 0.35*cos((float )mirror1.angle*M_PI/180.0f))
+    {
+      printf("Collision between mirror 1 and laser\n");
+      reflectLaser(iterator->first,mirror1);
+    }
+
+    // Check Collision Between mirror2 and laser
+    tmp2 = mirror2.pos_y - mirror2.pos_x * tan((float)(90.0f+mirror2.angle)*M_PI/180.0f);
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    tmp1 = (x_coord) * tan((float )(90.0f+mirror2.angle)*M_PI/180.0f) + tmp2;
+    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror2.pos_y + 0.35*cos((float )mirror2.angle*M_PI/180.0f) && y_coord > mirror2.pos_y - 0.35*cos((float )mirror2.angle*M_PI/180.0f))
+    {
+      printf("Collision between mirror 2 and laser\n");
+      reflectLaser(iterator->first,mirror2);
+    }
+
+    // Check Collision Between mirror3 and laser
+    tmp2 = mirror3.pos_y - mirror3.pos_x * tan((float)(90.0f+mirror3.angle)*M_PI/180.0f);
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    tmp1 = (x_coord) * tan((float )(90.0f+mirror3.angle)*M_PI/180.0f) + tmp2;
+    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror3.pos_y + 0.35*cos((float )mirror3.angle*M_PI/180.0f) && y_coord > mirror3.pos_y - 0.35*cos((float )mirror3.angle*M_PI/180.0f))
+    {
+      printf("Collision between mirror 3 and laser\n");
+      reflectLaser(iterator->first,mirror3);
+    }
+  }
 }
 
 void checkLaserBrickCollision()

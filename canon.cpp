@@ -95,11 +95,11 @@ void laser_canon::decreaseY()
 void laser_canon::tiltUp()
 {
   angle=angle+1;
-  printf("%f Up\n",angle);
+  //printf("%f Up\n",angle);
 }
 
 void laser_canon::tiltDown()
 {
   angle=angle-1;
-  printf("%f Down\n",angle);
+//  printf("%f Down\n",angle);
 }

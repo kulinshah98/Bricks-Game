@@ -53,55 +53,18 @@ void mirror_class::createMirror()
     pos_x + 0.03, pos_y + 0.35 - 0.12*5, 0
   };
 
-   GLfloat color_buffer_data [] = {
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1,  // color 1
-
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1, // color 1
-
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1, // color 1
-
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1, // color 1
-
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1, // color 1
-
-    0,0,1, // color 1
-    0,0,1, // color 2
-    0,0,1, // color 3
-
-    0,0,1, // color 3
-    0,0,1, // color 4
-    0,0,1 // color 1
-  };
+  GLfloat color_buffer_data[118];
+  for(int i=0;i<110;i++)
+  {
+    if(i%3==2)
+    {
+      color_buffer_data[i]=1;
+    }
+    else
+    {
+      color_buffer_data[i]=0;
+    }
+  }
   // create3DObject creates and returns a handle to a VAO that can be used later
   mirror = create3DObject(GL_TRIANGLES, 36, vertex_buffer_data, color_buffer_data, GL_FILL);
 }

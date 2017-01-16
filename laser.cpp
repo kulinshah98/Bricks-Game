@@ -81,7 +81,7 @@ void laser_class::drawSingleLaser()
   trans_y = trans_y + 0.05*sin(angle*M_PI/180.0f);
   trans_x = trans_x + 0.05*cos(angle*M_PI/180.0f);
   //glm::mat4 translateLaser = glm::translate(glm::vec3( trans_x,trans_y,0));
-  glm::mat4 translateLaser = glm::translate (glm::vec3( trans_x + 0.12*cos(angle*M_PI/180.0f), trans_y+ 0.62*sin(angle*M_PI/180.0f), 0)); // glTranslatef
+  glm::mat4 translateLaser = glm::translate (glm::vec3( trans_x + 0.4*cos(angle*M_PI/180.0f), trans_y+ 0.4*sin(angle*M_PI/180.0f), 0)); // glTranslatef
   glm::mat4 rotateLaser = glm::translate(glm::vec3(pos_x,pos_y,0)) * glm::rotate((float)(angle*M_PI/180.0f), glm::vec3(0,0,1)) * glm::translate(glm::vec3(-pos_x, -pos_y, 0));  // rotate about vector (1,0,0)
   glm::mat4 laserTransform = translateLaser * rotateLaser;
   //glm::mat4 laserTransform= glm::mat4(1.0f);
