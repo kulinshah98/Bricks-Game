@@ -50,6 +50,7 @@ public:
   int obj_type,id;
   float angle,pos_x,pos_y;
   VAO * canon;
+  VAO * canon_front;
 
 public:
   void createCanon();
@@ -150,7 +151,7 @@ extern float camera_rotation_angle,rectangle_rotation,triangle_rotation,triangle
 extern float triangle_x,now,prev_space,prev_brick;
 
 extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
-extern int space_held,game_over,num_brick,score;
+extern int space_held,game_over,num_brick,score,canon_held;
 
 extern VAO *triangle, *rectangle;
 extern laser_canon canon_obj;
@@ -158,6 +159,7 @@ extern std::map<int,brick_class> map_brick;
 extern basket_class red_basket, green_basket;
 extern std::map<int,laser_class> map_laser;
 extern mirror_class mirror1, mirror2, mirror3;
+extern VAO * lower_block;
 
 //Define Functions
 void keyboardDown (unsigned char key, int x, int y);
@@ -190,3 +192,5 @@ void checkCollisions();
 void checkBrickBasketCollision();
 void checkLaserMirrorCollision();
 void draw(VAO * obj, glm::vec3 trans, glm::vec3 pos, float angle_rot);
+void cursor_routine(int x,int y);
+void drawBackground();

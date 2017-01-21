@@ -2,6 +2,31 @@
 
 using namespace std;
 
+void drawBackground()
+{
+  GLfloat vertex_buffer_data1 [] = {
+    -4.0f, -4.0f, 0, // vertex 1
+    4.0f, -4.0f, 0, // vertex 2
+    4.0f, -3.4f, 0, // vertex 3
+
+    4.0f, -3.4f, 0, // vertex 3
+    -4.0f, -3.4f, 0, // vertex 4
+    -4.0f, -4.0f, 0,  // vertex 1
+  };
+
+   GLfloat color_buffer_data1 [] = {
+    0.28f, 0.44f, 0.41f, // color 1
+    0.28f, 0.44f, 0.41f, // color 2
+    0.28f, 0.44f, 0.41f, // color 3
+
+		0.28f, 0.44f, 0.41f, // color 1
+    0.28f, 0.44f, 0.41f, // color 2
+    0.28f, 0.44f, 0.41f // color 3
+  };
+  // create3DObject creates and returns a handle to a VAO that can be used later
+  lower_block = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data1, color_buffer_data1, GL_FILL);
+	draw(lower_block, glm::vec3(0,0,0), glm::vec3(0,0,0), 0);
+}
 
 /* Function to load Shaders - Use it as it is */
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path) {
@@ -200,7 +225,7 @@ void initGLUT (int& argc, char** argv, int width, int height)
     // register glut callbacks
     glutKeyboardFunc (keyboardDown);
     glutKeyboardUpFunc (keyboardUp);
-
+		glutPassiveMotionFunc (cursor_routine);
     glutSpecialFunc (keyboardSpecialDown);
     glutSpecialUpFunc (keyboardSpecialUp);
 		//glutKeyboardFunc(keyPressed);

@@ -54,7 +54,12 @@ void mirror_class::createMirror()
   };
 
   GLfloat color_buffer_data[118];
-  for(int i=0;i<110;i++)
+  for(int i=0;i<18;i++)
+  {
+    color_buffer_data[i]=0.75f;
+    cout << color_buffer_data[i] << endl;
+  }
+  for(int i=18;i<110;i++)
   {
     if(i%3==2)
     {

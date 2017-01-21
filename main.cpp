@@ -129,10 +129,35 @@ void keyboardSpecialUp (int key, int x, int y)
  */
 void mouseClick (int button, int state, int x, int y)
 {
+  float x_coord = (( (float )x - 500.0f)/500.0f)*4;
+  float y_coord = (( (float )y - 300.0f)/300.0f)*4;
+  float x_coord1 = -3.6f + canon_obj.pos_x + 0.6*cos((float )canon_obj.angle*M_PI/180.0f);
+  float y_coord1 = 0.0f + canon_obj.pos_y + 0.6*sin((float )canon_obj.angle*M_PI/180.0f);
+  float x_coord2 = -3.4f + canon_obj.pos_x - 1.0*sin((float )(canon_obj.angle)*M_PI/180.0f);
+  float y_coord2 = 0.0f + canon_obj.pos_y + 1.0*cos((float )(canon_obj.angle)*M_PI/180.0f);
+  float x_coord3 = -3.4f + canon_obj.pos_x + 1.0*sin((float )(canon_obj.angle)*M_PI/180.0f);
+  float y_coord3 = 0.0f + canon_obj.pos_y - 1.0*cos((float )(canon_obj.angle)*M_PI/180.0f);
+  cout << "Coordinates: " << x_coord1 << " " << y_coord1 << " " << x_coord2 << " " << y_coord2 << " " << x_coord3 << " " << y_coord3 << endl;
+  float var11 = ( y_coord1 - y_coord2 )*( x_coord3 - x_coord2 ) - ( x_coord1 - x_coord2 )*( y_coord3 - y_coord2 );
+  float var12 = ( y_coord - y_coord2 )*( x_coord3 - x_coord2 ) - ( x_coord - x_coord2 )*( y_coord3 - y_coord2 );
+  float var21 = ( y_coord2 - y_coord1 )*( x_coord3 - x_coord1 ) - ( x_coord2 - x_coord1 )*( y_coord3 - y_coord1 );
+  float var22 = ( y_coord - y_coord1 )*( x_coord3 - x_coord1 ) - ( x_coord - x_coord1 )*( y_coord3 - y_coord1 );
+  float var31 = ( y_coord3 - y_coord1 )*( x_coord2 - x_coord1 ) - ( x_coord3 - x_coord1 )*( y_coord2 - y_coord1 );
+  float var32 = ( y_coord - y_coord1 )*( x_coord2 - x_coord1 ) - ( x_coord - x_coord1 )*( y_coord2 - y_coord1 );
+  cout << var11 << " " << var12 << " " << var21 << " " << var22 << " " << var31 << " " << var32 << endl;
     switch (button) {
         case GLUT_LEFT_BUTTON:
             if (state == GLUT_UP)
-                triangle_rot_dir *= -1;
+                if( abs((y_coord - ( 0.0f + canon_obj.pos_y)) - (tan((float )canon_obj.angle*M_PI/180.0f))*(x_coord - ( -3.6f + canon_obj.pos_x ))) < 0.2 )
+                {
+                  canon_held=1;
+                  printf("Canon Held\n");
+                }
+                if( var11*var12 >= 0 && var21*var22 >= 0 && var31*var32 >= 0 )
+                {
+                  canon_held=1;
+                  printf("Canon Held By canon front\n");
+                }
             break;
         case GLUT_RIGHT_BUTTON:
             if (state == GLUT_UP) {
@@ -144,10 +169,16 @@ void mouseClick (int button, int state, int x, int y)
     }
 }
 
+void cursor_routine(int x,int y)
+{
+  float x_coord = (( x - 500)/500)*4;
+  float y_coord = (( x - 300)/300)*4;
+}
 
 /* Executed when the mouse moves to position ('x', 'y') */
 void mouseMotion (int x, int y)
 {
+  printf("%d %d\n",x,y);
 }
 
 /* Render the scene with openGL */
@@ -212,6 +243,7 @@ void draw ()
   canon_obj.drawCanon( glm::vec3(0,0,1) );
   changeBasketPosition();
   drawBricks();
+  drawBackground();
   drawLasers();
   mirror1.drawMirror();
   mirror2.drawMirror();
@@ -393,10 +425,10 @@ void initGL (int width, int height)
 // Create Baskets
   red_basket.init(0);
   red_basket.createBasket();
-
   green_basket.init(1);
   green_basket.createBasket();
 
+// Create Mirrors
   mirror1.init(1);
   mirror1.createMirror();
 
@@ -415,7 +447,7 @@ void initGL (int width, int height)
 	reshapeWindow (width, height);
 
 	// Background color of the scene
-	glClearColor (0.87f, 0.87f, 0.87f, 0.0f); // R, G, B, A
+	glClearColor (0.47f, 0.48f, 0.49f, 0.0f); // R, G, B, A
 	glClearDepth (1.0f);
 
 	glEnable (GL_DEPTH_TEST);

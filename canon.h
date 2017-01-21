@@ -57,6 +57,7 @@ public:
   int obj_type,id;
   float angle,pos_x,pos_y;
   VAO * canon;
+  VAO * canon_front;
 
 public:
   void createCanon();

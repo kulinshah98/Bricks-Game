@@ -24,7 +24,7 @@ void checkLaserMirrorCollision()
     x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
     y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror1.angle)*M_PI/180.0f) + tmp2;
-    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror1.pos_y + 0.35*cos((float )mirror1.angle*M_PI/180.0f) && y_coord > mirror1.pos_y - 0.35*cos((float )mirror1.angle*M_PI/180.0f))
+    if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror1.pos_y + 0.35*cos((float )mirror1.angle*M_PI/180.0f) && y_coord > mirror1.pos_y - 0.35*cos((float )mirror1.angle*M_PI/180.0f))
     {
       printf("Collision between mirror 1 and laser\n");
       reflectLaser(iterator->first,mirror1);
@@ -35,7 +35,7 @@ void checkLaserMirrorCollision()
     x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
     y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror2.angle)*M_PI/180.0f) + tmp2;
-    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror2.pos_y + 0.35*cos((float )mirror2.angle*M_PI/180.0f) && y_coord > mirror2.pos_y - 0.35*cos((float )mirror2.angle*M_PI/180.0f))
+    if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror2.pos_y + 0.35*cos((float )mirror2.angle*M_PI/180.0f) && y_coord > mirror2.pos_y - 0.35*cos((float )mirror2.angle*M_PI/180.0f))
     {
       printf("Collision between mirror 2 and laser\n");
       reflectLaser(iterator->first,mirror2);
@@ -46,7 +46,7 @@ void checkLaserMirrorCollision()
     x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
     y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror3.angle)*M_PI/180.0f) + tmp2;
-    if(abs(y_coord - tmp1) < 0.15 && y_coord < mirror3.pos_y + 0.35*cos((float )mirror3.angle*M_PI/180.0f) && y_coord > mirror3.pos_y - 0.35*cos((float )mirror3.angle*M_PI/180.0f))
+    if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror3.pos_y + 0.35*cos((float )mirror3.angle*M_PI/180.0f) && y_coord > mirror3.pos_y - 0.35*cos((float )mirror3.angle*M_PI/180.0f))
     {
       printf("Collision between mirror 3 and laser\n");
       reflectLaser(iterator->first,mirror3);
@@ -63,7 +63,7 @@ void checkLaserBrickCollision()
   {
     for(it_type2 iterator2=map_brick.begin(); iterator2 != map_brick.end(); iterator2++)
     {
-      if( abs( (iterator1->second).pos_x + (iterator1->second).trans_x - (iterator2->second).pos_x - (iterator2->second).trans_x) < 0.22 &&
+      if( abs( (iterator1->second).pos_x + (iterator1->second).trans_x - (iterator2->second).pos_x - (iterator2->second).trans_x) < 0.32 &&
           abs( (iterator1->second).pos_y + (iterator1->second).trans_y - (iterator2->second).pos_y - (iterator2->second).trans_y) < 0.22)
           {
             cout << "Collision between laser and brick\n";
