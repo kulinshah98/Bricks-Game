@@ -15,35 +15,43 @@ void laser_canon::createCanon ()
   };
 
    GLfloat color_buffer_data [] = {
-    0,0,0, // color 1
-    0,0,0, // color 2
-    0,0,0, // color 3
+     0.10f,0.37f,0.57f,
+     0.10f,0.37f,0.57f,
+     0.10f,0.37f,0.57f,
 
-    0,0,0, // color 3
-    0,0,0, // color 4
-    0,0,0  // color 1
+     0.10f,0.37f,0.57f,
+     0.10f,0.37f,0.57f,
+     0.10f,0.37f,0.57f
   };
 
   GLfloat vertex_buffer_data2 [] = {
-    -3.0, 0, 0,
-    -3.4, 1.0, 0,
-    -3.4, -1.0, 0
+    -4.0,-0.35,0, // vertex 1
+    -3.7,-0.35,0, // vertex 2
+    -3.7, 0.35,0, // vertex 3
+
+    -3.7, 0.35,0, // vertex 3
+    -4.0, 0.35,0, // vertex 4
+    -4.0,-0.35,0  // vertex 1
   };
 
   GLfloat color_buffer_data2 [] = {
-    0,0,1,
-    0,0,1,
-    0,0,1
+    0.10f,0.37f,0.57f,
+    0.10f,0.37f,0.57f,
+    0.10f,0.37f,0.57f,
+
+    0.10f,0.37f,0.57f,
+    0.10f,0.37f,0.57f,
+    0.10f,0.37f,0.57f
   };
   // create3DObject creates and returns a handle to a VAO that can be used later
-  canon_front = create3DObject(GL_TRIANGLES, 3, vertex_buffer_data2, color_buffer_data2, GL_LINE);
+  canon_back = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data2, color_buffer_data2, GL_FILL);
   canon = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
 }
 
 void laser_canon::drawCanon (glm::vec3 rot_coord)
 {
-  draw(canon_front, glm::vec3(pos_x + 0.4*cos((float )angle*M_PI/180.0f) - 0.4, pos_y + 0.4*sin((float )angle*M_PI/180.0f), 0), glm::vec3(-3.2,0,0), angle);
-  draw(canon, glm::vec3(pos_x, pos_y, 0), glm::vec3(-3.6,0,0), angle);
+  draw(canon_back, glm::vec3(pos_x, pos_y, 0), glm::vec3(0,0,0), 0);
+  draw(canon, glm::vec3(pos_x, pos_y, 0), glm::vec3(-4.0,0,0), angle);
 }
 
 void laser_canon::init()
@@ -55,24 +63,32 @@ void laser_canon::init()
 
 void laser_canon::increaseY()
 {
-  pos_y=pos_y+0.05;
-  printf("%f",pos_y);
+  if(pos_y < 3.7)
+  {
+    pos_y=pos_y+0.05;
+  }
 }
 
 void laser_canon::decreaseY()
 {
-  pos_y=pos_y-0.05;
-  printf("%f",pos_y);
+  if(pos_y > -3.1)
+  {
+    pos_y=pos_y-0.05;
+  }
 }
 
 void laser_canon::tiltUp()
 {
-  angle=angle+1;
-  //printf("%f Up\n",angle);
+  if(angle < 88)
+  {
+    angle=angle+1;
+  }
 }
 
 void laser_canon::tiltDown()
 {
-  angle=angle-1;
-//  printf("%f Down\n",angle);
+  if(angle > -88)
+  {
+    angle=angle-1;
+  }
 }

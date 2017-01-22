@@ -61,14 +61,7 @@ void mirror_class::createMirror()
   }
   for(int i=18;i<110;i++)
   {
-    if(i%3==2)
-    {
-      color_buffer_data[i]=1;
-    }
-    else
-    {
-      color_buffer_data[i]=0;
-    }
+    color_buffer_data[i] = 0.19f;
   }
   // create3DObject creates and returns a handle to a VAO that can be used later
   mirror = create3DObject(GL_TRIANGLES, 36, vertex_buffer_data, color_buffer_data, GL_FILL);

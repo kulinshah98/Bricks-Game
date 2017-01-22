@@ -15,13 +15,13 @@ void drawBackground()
   };
 
    GLfloat color_buffer_data1 [] = {
-    0.28f, 0.44f, 0.41f, // color 1
-    0.28f, 0.44f, 0.41f, // color 2
+    0.38f, 0.54f, 0.51f, // color 1
+    0.38f, 0.54f, 0.51f, // color 2
     0.28f, 0.44f, 0.41f, // color 3
 
 		0.28f, 0.44f, 0.41f, // color 1
     0.28f, 0.44f, 0.41f, // color 2
-    0.28f, 0.44f, 0.41f // color 3
+    0.38f, 0.54f, 0.51f // color 3
   };
   // create3DObject creates and returns a handle to a VAO that can be used later
   lower_block = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data1, color_buffer_data1, GL_FILL);
