@@ -130,49 +130,54 @@ void keyboardSpecialUp (int key, int x, int y)
 void mouseClick (int button, int state, int x, int y)
 {
   float x_coord = (( (float )x - 500.0f)/500.0f)*4;
-  float y_coord = (( (float )y - 300.0f)/300.0f)*4;
-  float x_coord1 = -3.6f + canon_obj.pos_x + 0.6*cos((float )canon_obj.angle*M_PI/180.0f);
-  float y_coord1 = 0.0f + canon_obj.pos_y + 0.6*sin((float )canon_obj.angle*M_PI/180.0f);
-  float x_coord2 = -3.4f + canon_obj.pos_x - 1.0*sin((float )(canon_obj.angle)*M_PI/180.0f);
-  float y_coord2 = 0.0f + canon_obj.pos_y + 1.0*cos((float )(canon_obj.angle)*M_PI/180.0f);
-  float x_coord3 = -3.4f + canon_obj.pos_x + 1.0*sin((float )(canon_obj.angle)*M_PI/180.0f);
-  float y_coord3 = 0.0f + canon_obj.pos_y - 1.0*cos((float )(canon_obj.angle)*M_PI/180.0f);
-  cout << "Coordinates: " << x_coord1 << " " << y_coord1 << " " << x_coord2 << " " << y_coord2 << " " << x_coord3 << " " << y_coord3 << endl;
-  float var11 = ( y_coord1 - y_coord2 )*( x_coord3 - x_coord2 ) - ( x_coord1 - x_coord2 )*( y_coord3 - y_coord2 );
-  float var12 = ( y_coord - y_coord2 )*( x_coord3 - x_coord2 ) - ( x_coord - x_coord2 )*( y_coord3 - y_coord2 );
-  float var21 = ( y_coord2 - y_coord1 )*( x_coord3 - x_coord1 ) - ( x_coord2 - x_coord1 )*( y_coord3 - y_coord1 );
-  float var22 = ( y_coord - y_coord1 )*( x_coord3 - x_coord1 ) - ( x_coord - x_coord1 )*( y_coord3 - y_coord1 );
-  float var31 = ( y_coord3 - y_coord1 )*( x_coord2 - x_coord1 ) - ( x_coord3 - x_coord1 )*( y_coord2 - y_coord1 );
-  float var32 = ( y_coord - y_coord1 )*( x_coord2 - x_coord1 ) - ( x_coord - x_coord1 )*( y_coord2 - y_coord1 );
-  cout << var11 << " " << var12 << " " << var21 << " " << var22 << " " << var31 << " " << var32 << endl;
-    switch (button) {
-        case GLUT_LEFT_BUTTON:
-            if (state == GLUT_UP)
-                if( abs((y_coord - ( 0.0f + canon_obj.pos_y)) - (tan((float )canon_obj.angle*M_PI/180.0f))*(x_coord - ( -3.6f + canon_obj.pos_x ))) < 0.2 )
-                {
-                  canon_held=1;
-                  printf("Canon Held\n");
-                }
-                if( var11*var12 >= 0 && var21*var22 >= 0 && var31*var32 >= 0 )
-                {
-                  canon_held=1;
-                  printf("Canon Held By canon front\n");
-                }
-            break;
-        case GLUT_RIGHT_BUTTON:
-            if (state == GLUT_UP) {
-                rectangle_rot_dir *= -1;
-            }
-            break;
-        default:
-            break;
-    }
+  float y_coord = (( -(float )y + 300.0f)/300.0f)*4;
+  cout << x_coord << " " << y_coord << endl;
+  cout << abs(x_coord - canon_obj.pos_x + 3.6) << " " << abs(y_coord - canon_obj.pos_y + 0) << endl;
+  if( abs(x_coord - canon_obj.pos_x + 3.6) < 0.43 && abs(y_coord - canon_obj.pos_y + 0) < 0.38 && red_basket_held%4==0 && green_basket_held%4==0)
+  {
+    canon_held++;
+    cout << canon_held << "<---" << endl;
+  }
+  else if(canon_held%4==2)
+  {
+    laser_class laser_obj;
+    map_laser[id_laser]=laser_obj;
+    map_laser[id_laser].init(id_laser, canon_obj.pos_x, canon_obj.pos_y, canon_obj.angle);
+    map_laser[id_laser].createLaser();
+    id_laser++;
+  }
+  else if( abs( -1 + red_basket.giveX() - x_coord ) < 0.6  && abs( - 3  - y_coord ) < 0.45 && canon_held%4==0 && green_basket_held%4==0)
+  {
+    red_basket_held++;
+  //  cout << red_basket_held << " Red basket held \n";
+  }
+  else if( abs( +1 + green_basket.giveX() - x_coord ) < 0.6  && abs( - 3  - y_coord ) < 0.45 && canon_held%4==0 && red_basket_held%4==0 )
+  {
+    green_basket_held++;
+  //  cout << green_basket_held << " Green_basket_held\n ";
+  }
 }
 
 void cursor_routine(int x,int y)
 {
-  float x_coord = (( x - 500)/500)*4;
-  float y_coord = (( x - 300)/300)*4;
+  float x_coord = (( (float )x - 500)/500)*4;
+  float y_coord = (( -(float )y + 300)/300)*4;
+  if(canon_held%4==2)
+  {
+    canon_obj.angle = atan(y_coord/(x_coord+4.0f))*180/M_PI;
+    //cout << canon_obj.angle << endl;
+  }
+  else if(green_basket_held%4==2)
+  {
+    green_basket.trans_x = x_coord - 1.0f;
+    green_basket.assignX(x_coord - 1.0f);
+  }
+  else if(red_basket_held%4==2)
+  {
+    red_basket.trans_x = x_coord + 1.0f;
+    red_basket.assignX(x_coord + 1.0f);
+    //cout << red_basket.trans_x << endl;
+  }
 }
 
 /* Executed when the mouse moves to position ('x', 'y') */
@@ -211,6 +216,14 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 
 void draw ()
 {
+  if(red_basket_held%4==1 || red_basket_held%4==3)
+  {
+    red_basket_held++;
+  }
+  if(green_basket_held%4==1 || green_basket_held%4==3)
+  {
+    green_basket_held++;
+  }
   float time_interval=0.006;
   time_interval=time_interval*(id_brick/10 + 1);
   if(game_over==1)

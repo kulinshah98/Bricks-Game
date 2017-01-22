@@ -54,13 +54,14 @@ public:
   void increaseX();
   void decreaseX();
   float giveX();
+  void assignX(float val);
 };
 
 #endif
 
 extern float camera_rotation_angle;
 extern GLuint programID;
-
+extern basket_class red_basket, green_basket;
 
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode);
 

@@ -42,7 +42,7 @@ bool triangle_rot_status = true;
 bool rectangle_rot_status = true;
 int id_brick=0,id_laser=0,game_over=0,num_brick=0,score=0;
 int level=1,green_basket_decrease=0,red_basket_increase=0,red_basket_decrease=0,green_basket_increase=0;
-int space_held=0,s_held=0,a_held=0,d_held=0,f_held=0,canon_held=0;
+int space_held=0,s_held=0,a_held=0,d_held=0,f_held=0,canon_held=0,red_basket_held=0,green_basket_held=0;
 
 float camera_rotation_angle = 90,now=0,prev_space=0,prev_brick=0;
 float rectangle_rotation = 0;
@@ -111,6 +111,8 @@ public:
   void drawBasket();
   void increaseX();
   void decreaseX();
+  void assignX(float val);;
+  float giveX();
 };
 
 #endif

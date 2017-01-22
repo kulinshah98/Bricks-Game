@@ -100,6 +100,7 @@ public:
   void increaseX();
   void decreaseX();
   float giveX();
+  void assignX(float val);
 };
 
 #endif
@@ -151,7 +152,7 @@ extern float camera_rotation_angle,rectangle_rotation,triangle_rotation,triangle
 extern float triangle_x,now,prev_space,prev_brick;
 
 extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
-extern int space_held,game_over,num_brick,score,canon_held;
+extern int space_held,game_over,num_brick,score,canon_held,red_basket_held,green_basket_held;
 
 extern VAO *triangle, *rectangle;
 extern laser_canon canon_obj;

@@ -74,6 +74,7 @@ void basket_class::init(int green)
 
 void basket_class::drawBasket()
 {
+//  cout << trans_x << " " << trans_y << " IN Basket" << endl;
   draw(basket, glm::vec3(trans_x,trans_y,0), glm::vec3(0,0,0), 0.0f);
 }
 
@@ -96,4 +97,9 @@ void basket_class::decreaseX()
 float basket_class::giveX()
 {
   return trans_x;
+}
+
+void basket_class::assignX(float val)
+{
+  trans_x=val;
 }

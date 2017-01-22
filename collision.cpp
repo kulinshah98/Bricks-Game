@@ -80,7 +80,7 @@ void checkBrickBasketCollision()
   typedef map<int,brick_class>::iterator it_type;
   for( it_type iterator=map_brick.begin(); iterator != map_brick.end(); iterator++)
   {
-    if(abs( -1 + red_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.8  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
+    if(abs( -1 + red_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.7  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
     {
       printf("RED COLLIDE\n");
       if( map_brick[iterator->first].col_brick != 1)
@@ -92,7 +92,7 @@ void checkBrickBasketCollision()
       num_brick--;
       map_brick.erase(iterator->first);
     }
-    else if(abs( 1 + green_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.8  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
+    else if(abs( 1 + green_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.7  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
     {
       printf("GREEN COLLIDE\n");
       if( map_brick[iterator->first].col_brick != 2)
