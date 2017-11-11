@@ -9,13 +9,16 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
+#include <irrKlang.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
 using namespace std;
+using namespace irrklang;
 
 struct VAO {
     GLuint VertexArrayID;
@@ -149,10 +152,10 @@ extern GLuint programID;
 extern bool triangle_rot_status,rectangle_rot_status;
 
 extern float camera_rotation_angle,rectangle_rotation,triangle_rotation,triangle_rot_dir,rectangle_rot_dir;
-extern float triangle_x,now,prev_space,prev_brick;
+extern float triangle_x,now,prev_space,prev_brick,zoom_param, pan_y, pan_x, speed;
 
 extern int id_num,id_laser,level,id_brick,green_basket_decrease,red_basket_increase,red_basket_decrease,green_basket_increase,a_held,s_held,d_held,f_held;
-extern int space_held,game_over,num_brick,score,canon_held,red_basket_held,green_basket_held;
+extern int space_held,game_over,num_brick,score,canon_held,red_basket_held,green_basket_held,width,height,pause_game;
 
 extern VAO *triangle, *rectangle;
 extern laser_canon canon_obj;
@@ -195,3 +198,4 @@ void checkLaserMirrorCollision();
 void draw(VAO * obj, glm::vec3 trans, glm::vec3 pos, float angle_rot);
 void cursor_routine(int x,int y);
 void drawBackground();
+void reshapeWindow (int width, int height);

@@ -57,6 +57,6 @@ void brick_class::init(int id_brick)
 
 void brick_class::drawSingleBrick()
 {
-  trans_y-=0.01f;
+  trans_y-=speed;
   draw(brick, glm::vec3(0,trans_y,0), glm::vec3(pos_x, pos_y,0), angle);
 }

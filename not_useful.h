@@ -77,7 +77,7 @@ extern bool rectangle_rot_status;
 extern float camera_rotation_angle;
 extern float rectangle_rotation;
 extern float triangle_rotation;
-extern float triangle_x;
+extern float triangle_x,zoom_param, pan_y, pan_x;
 
 extern VAO *triangle, *rectangle, *lower_block;
 
@@ -86,3 +86,4 @@ extern int id_num;
 void makeBrick(int value);
 void cursor_routine(int x,int y);
 void drawBackground();
+void mouseWheel(int button, int dir, int x, int y);

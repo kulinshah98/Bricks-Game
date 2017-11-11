@@ -38,7 +38,7 @@ struct GLMatrices {
 extern GLMatrices Matrices;
 
 extern GLuint programID;
-extern float camera_rotation_angle;
+extern float camera_rotation_angle, speed;
 
 
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, GLfloat* vertex_buffer_data, GLfloat* color_buffer_data, GLenum fill_mode);

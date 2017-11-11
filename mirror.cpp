@@ -57,7 +57,7 @@ void mirror_class::createMirror()
   for(int i=0;i<18;i++)
   {
     color_buffer_data[i]=0.75f;
-    cout << color_buffer_data[i] << endl;
+  //  cout << color_buffer_data[i] << endl;
   }
   for(int i=18;i<110;i++)
   {
@@ -84,7 +84,7 @@ void mirror_class::init(int id_mir)
     }
     else if(id_mir==3)
     {
-      angle =  13.0f;
+      angle =  -13.0f;
       pos_x = 2.7f;
       pos_y = 1.3f;
     }

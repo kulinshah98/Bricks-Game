@@ -2,7 +2,7 @@
 
 void basket_class::createBasket()
 {
-  printf("IN CREATE basket\n");
+  //printf("IN CREATE basket\n");
   GLfloat vertex_buffer_data [] = {
     pos_x - 0.43, pos_y - 0.40, 0, // vertex 1
     pos_x + 0.43, pos_y - 0.40, 0, // vertex 2

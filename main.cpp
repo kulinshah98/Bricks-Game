@@ -1,7 +1,7 @@
 #include "main.h"
 
 using namespace std;
-
+using namespace irrklang;
 /* Executed when a regular key is pressed */
 void keyboardDown (unsigned char key, int x, int y)
 {
@@ -55,6 +55,23 @@ void keyboardUp (unsigned char key, int x, int y)
         case 'd':
             d_held = 0;
             break;
+        case 'm':
+            speed+=0.003;
+            break;
+        case 'n':
+            speed-=0.003;
+            break;
+        case 'p':
+            pause_game=1-pause_game;
+            if(pause_game==0)
+            {
+              printf("\nResume\n\n");
+            }
+            else
+            {
+              printf("\n\nGame Paused\n");
+            }
+            break;
 
         default:
             break;
@@ -75,6 +92,14 @@ void keyboardSpecialDown (int key, int x, int y)
         {
           red_basket_decrease = 1;
         }
+        else
+        {
+          if( -4.0/zoom_param + pan_x > -3.85)
+          {
+            pan_x-=0.1;
+            reshapeWindow(width, height);
+          }
+        }
         break;
 
       case GLUT_KEY_RIGHT:
@@ -85,6 +110,30 @@ void keyboardSpecialDown (int key, int x, int y)
         else if( glutGetModifiers() == GLUT_ACTIVE_CTRL)
         {
           red_basket_increase = 1;
+        }
+        else
+        {
+          if(4.0/zoom_param + pan_x < 3.85)
+          {
+            pan_x+=0.1;
+            reshapeWindow(width, height);
+          }
+        }
+        break;
+
+      case GLUT_KEY_UP:
+        if(4.0/zoom_param + pan_y < 3.9)
+        {
+          pan_y+=0.08;
+          reshapeWindow(width, height);
+        }
+        break;
+
+      case GLUT_KEY_DOWN:
+        if( -4.0/zoom_param + pan_y > -3.9)
+        {
+          pan_y-=0.08;
+          reshapeWindow(width, height);
         }
         break;
 
@@ -127,16 +176,38 @@ void keyboardSpecialUp (int key, int x, int y)
 /* Executed when a mouse button 'button' is put into state 'state'
  at screen position ('x', 'y')
  */
+
 void mouseClick (int button, int state, int x, int y)
 {
   float x_coord = (( (float )x - 500.0f)/500.0f)*4;
+  x_coord = x_coord/zoom_param + pan_x;
   float y_coord = (( -(float )y + 300.0f)/300.0f)*4;
-  cout << x_coord << " " << y_coord << endl;
-  cout << abs(x_coord - canon_obj.pos_x + 3.6) << " " << abs(y_coord - canon_obj.pos_y + 0) << endl;
+  y_coord = y_coord/zoom_param + pan_y;
+//  cout << button << endl;
+  if(button == 3)
+  {
+    if(zoom_param>=4)
+    {
+      return ;
+    }
+    zoom_param+=0.05;
+    reshapeWindow(width, height);
+    return ;
+  }
+  else if(button==4)
+  {
+    if(zoom_param<=1)
+    {
+      return;
+    }
+    zoom_param-=0.05;
+    reshapeWindow(width, height);
+    return ;
+  }
   if( abs(x_coord - canon_obj.pos_x + 3.6) < 0.43 && abs(y_coord - canon_obj.pos_y + 0) < 0.38 && red_basket_held%4==0 && green_basket_held%4==0)
   {
     canon_held++;
-    cout << canon_held << "<---" << endl;
+  //  cout << canon_held << "<---" << endl;
   }
   else if(canon_held%4==2)
   {
@@ -149,23 +220,38 @@ void mouseClick (int button, int state, int x, int y)
   else if( abs( -1 + red_basket.giveX() - x_coord ) < 0.6  && abs( - 3  - y_coord ) < 0.45 && canon_held%4==0 && green_basket_held%4==0)
   {
     red_basket_held++;
-  //  cout << red_basket_held << " Red basket held \n";
+    if(red_basket_held%4==2)
+    {
+      cout << "Red basket held\n";
+    }
+    else if(red_basket_held%4==0)
+    {
+      cout << "Red basket released\n";
+    }
   }
   else if( abs( +1 + green_basket.giveX() - x_coord ) < 0.6  && abs( - 3  - y_coord ) < 0.45 && canon_held%4==0 && red_basket_held%4==0 )
   {
     green_basket_held++;
-  //  cout << green_basket_held << " Green_basket_held\n ";
+    if(green_basket_held%4==2)
+    {
+      cout << "Green basket held\n";
+    }
+    else if(green_basket_held%4==0)
+    {
+      cout << "Green basket released\n";
+    }
   }
 }
 
 void cursor_routine(int x,int y)
 {
   float x_coord = (( (float )x - 500)/500)*4;
+  x_coord = x_coord/zoom_param + pan_x;
   float y_coord = (( -(float )y + 300)/300)*4;
+  y_coord = y_coord/zoom_param + pan_y;
   if(canon_held%4==2)
   {
     canon_obj.angle = atan(y_coord/(x_coord+4.0f))*180/M_PI;
-    //cout << canon_obj.angle << endl;
   }
   else if(green_basket_held%4==2)
   {
@@ -176,14 +262,13 @@ void cursor_routine(int x,int y)
   {
     red_basket.trans_x = x_coord + 1.0f;
     red_basket.assignX(x_coord + 1.0f);
-    //cout << red_basket.trans_x << endl;
   }
 }
 
 /* Executed when the mouse moves to position ('x', 'y') */
 void mouseMotion (int x, int y)
 {
-  printf("%d %d\n",x,y);
+//  printf("%d %d\n",x,y);
 }
 
 /* Render the scene with openGL */
@@ -216,46 +301,42 @@ void drawObject(glm::mat4 VP, glm::vec3 trans_coord, float rot_angle, glm::vec3 
 
 void draw ()
 {
-  if(red_basket_held%4==1 || red_basket_held%4==3)
-  {
-    red_basket_held++;
-  }
-  if(green_basket_held%4==1 || green_basket_held%4==3)
-  {
-    green_basket_held++;
-  }
-  float time_interval=0.006;
-  time_interval=time_interval*(id_brick/10 + 1);
-  if(game_over==1)
-  {
-    printf("%d\n",score-5);
-    exit(0);
-  }
-  now = ((float )clock())/CLOCKS_PER_SEC;
-  if(space_held && now - prev_space > time_interval)
-  {
-    laser_class laser_obj;
-    map_laser[id_laser]=laser_obj;
-    map_laser[id_laser].init(id_laser, canon_obj.pos_x, canon_obj.pos_y, canon_obj.angle);
-    map_laser[id_laser].createLaser();
-    id_laser++;
-    prev_space=now;
-  }
-
-  if(now - prev_brick > time_interval*5 )
-  {
-    makeBrick();
-    prev_brick=now;
-  }
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // use the loaded shader program
-  // Don't change unless you know what you are doing
-  checkCollisions();
   glUseProgram (programID);
-  changeCanonPosition();
+  if(pause_game==0)
+  {
+    float time_interval=0.006;
+    time_interval=time_interval*(id_brick/10 + 4);
+    if(game_over==1)
+    {
+      printf("Score: %d\n",score);
+      printf("-----------------------------------------------------------\n");
+      exit(0);
+    }
+    now = ((float )clock())/CLOCKS_PER_SEC;
+    if(space_held && now - prev_space > time_interval)
+    {
+      laser_class laser_obj;
+      map_laser[id_laser]=laser_obj;
+      map_laser[id_laser].init(id_laser, canon_obj.pos_x, canon_obj.pos_y, canon_obj.angle);
+      map_laser[id_laser].createLaser();
+      id_laser++;
+      prev_space=now;
+    }
+
+    if(now - prev_brick > time_interval*5 )
+    {
+      makeBrick();
+      prev_brick=now;
+    }
+    // use the loaded shader program
+    // Don't change unless you know what you are doing
+    checkCollisions();
+    changeCanonPosition();
+    changeBasketPosition();
+    drawBricks();
+  }
   canon_obj.drawCanon( glm::vec3(0,0,1) );
-  changeBasketPosition();
-  drawBricks();
   drawBackground();
   drawLasers();
   mirror1.drawMirror();
@@ -474,8 +555,15 @@ void initGL (int width, int height)
 
 int main (int argc, char** argv)
 {
-	int width = 1000;
-	int height = 600;
+	ISoundEngine* engine = createIrrKlangDevice();
+  //ISound* music = engine->play3D("../../media/ophelia.mp3",
+    //                           vec3df(0,0,0), true, false, true);
+
+                               //if (music)
+                             	//	music->setMinDistance(5.0f);
+	engine->play2D("../../media/getout.ogg", true);
+	width = 1000;
+	height = 600;
   srand(time(NULL));
     initGLUT (argc, argv, width, height);
     map_brick.clear();
@@ -484,6 +572,7 @@ int main (int argc, char** argv)
 	initGL (width, height);
 
     glutMainLoop ();
+		engine->drop();
 
     return 0;
 }

@@ -17,38 +17,40 @@ void checkLaserMirrorCollision()
   float tmp1,tmp2,x_coord,y_coord;
   typedef map<int,laser_class>::iterator it_type;
 //  printf("In checkLaserMirrorCollision\n");
+//cout << mirror1.angle << " " << mirror2.angle << " " << mirror3.angle << endl;
   for(it_type iterator = map_laser.begin(); iterator != map_laser.end(); iterator++)
   {
     // Check Collision Between mirror1 and laser
+    //cout << (iterator->second).angle << endl;
     tmp2 = mirror1.pos_y - mirror1.pos_x * tan((float)(90.0f+mirror1.angle)*M_PI/180.0f);
-    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
-    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos(((float )(iterator->second).angle)*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin(((float )(iterator->second).angle)*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror1.angle)*M_PI/180.0f) + tmp2;
     if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror1.pos_y + 0.35*cos((float )mirror1.angle*M_PI/180.0f) && y_coord > mirror1.pos_y - 0.35*cos((float )mirror1.angle*M_PI/180.0f))
     {
-      printf("Collision between mirror 1 and laser\n");
+      //printf("Collision between mirror 1 and laser\n");
       reflectLaser(iterator->first,mirror1);
     }
 
     // Check Collision Between mirror2 and laser
     tmp2 = mirror2.pos_y - mirror2.pos_x * tan((float)(90.0f+mirror2.angle)*M_PI/180.0f);
-    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
-    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos(((float )(iterator->second).angle)*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin(((float )(iterator->second).angle)*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror2.angle)*M_PI/180.0f) + tmp2;
     if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror2.pos_y + 0.35*cos((float )mirror2.angle*M_PI/180.0f) && y_coord > mirror2.pos_y - 0.35*cos((float )mirror2.angle*M_PI/180.0f))
     {
-      printf("Collision between mirror 2 and laser\n");
+    //  printf("Collision between mirror 2 and laser\n");
       reflectLaser(iterator->first,mirror2);
     }
 
     // Check Collision Between mirror3 and laser
     tmp2 = mirror3.pos_y - mirror3.pos_x * tan((float)(90.0f+mirror3.angle)*M_PI/180.0f);
-    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos((iterator->second).angle*M_PI/180.0f));
-    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin((iterator->second).angle*M_PI/180.0f));
+    x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos(((float )(iterator->second).angle)*M_PI/180.0f));
+    y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin(((float )(iterator->second).angle)*M_PI/180.0f));
     tmp1 = (x_coord) * tan((float )(90.0f+mirror3.angle)*M_PI/180.0f) + tmp2;
     if(abs(y_coord - tmp1) < 0.05 && y_coord < mirror3.pos_y + 0.35*cos((float )mirror3.angle*M_PI/180.0f) && y_coord > mirror3.pos_y - 0.35*cos((float )mirror3.angle*M_PI/180.0f))
     {
-      printf("Collision between mirror 3 and laser\n");
+    //  printf("Collision between mirror 3 and laser\n");
       reflectLaser(iterator->first,mirror3);
     }
   }
@@ -82,25 +84,47 @@ void checkBrickBasketCollision()
   {
     if(abs( -1 + red_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.7  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
     {
-      printf("RED COLLIDE\n");
-      if( map_brick[iterator->first].col_brick != 1)
+      //printf("RED COLLIDE\n");
+      if( map_brick[iterator->first].col_brick == 1 )
+      {
+        score+=100;
+        printf("\nRed brick collected in Red Basket\n");
+        printf("Total Score:   %d\n",score);
+      }
+      else if( map_brick[iterator->first].col_brick == 2 )
+      {
+        score-=30;
+        printf("\nGreen brick collected in Red Basket\n");
+        printf("Total Score:   %d\n",score);
+      }
+      else if( map_brick[iterator->first].col_brick == 0 )
       {
         game_over=1;
-        printf("game over\n");
+
+        printf("\n-----------------------------------------------------------\nGame Over.\n");
       }
-      score+=5;
       num_brick--;
       map_brick.erase(iterator->first);
     }
     else if(abs( 1 + green_basket.giveX() - map_brick[iterator->first].pos_x - map_brick[iterator->first].trans_x ) < 0.7  && abs( - 3  - map_brick[iterator->first].pos_y - map_brick[iterator->first].trans_y ) < 0.5 )
     {
-      printf("GREEN COLLIDE\n");
-      if( map_brick[iterator->first].col_brick != 2)
+      if( map_brick[iterator->first].col_brick == 2 )
+      {
+        score+=100;
+        printf("\nGreen brick collected in Green Basket\n");
+        printf("Total Score:   %d\n",score);
+      }
+      else if( map_brick[iterator->first].col_brick == 1 )
+      {
+        score-=30;
+        printf("\nRed brick collected in Green Basket\n");
+        printf("Total Score:   %d\n",score);
+      }
+      else if( map_brick[iterator->first].col_brick == 0 )
       {
         game_over=1;
-        printf("game over\n");
+        printf("\n-----------------------------------------------------------\nGame Over.\n");
       }
-      score+=5;
       num_brick--;
       map_brick.erase(iterator->first);
     }

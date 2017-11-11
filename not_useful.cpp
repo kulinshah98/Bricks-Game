@@ -197,7 +197,8 @@ void reshapeWindow (int width, int height)
     // Matrices.projection = glm::perspective (fov, (GLfloat) width / (GLfloat) height, 0.1f, 500.0f);
 
     // Ortho projection for 2D views
-    Matrices.projection = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.1f, 500.0f);
+    //cout << zoom_param << endl;
+    Matrices.projection = glm::ortho(-4.0f/zoom_param + pan_x, 4.0f/zoom_param+pan_x, -4.0f/zoom_param + pan_y, 4.0f/zoom_param + pan_y, 0.1f, 500.0f);
 }
 
 /* Initialise glut window, I/O callbacks and the renderer to use */
