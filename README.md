@@ -2,6 +2,9 @@
 
 ## Project Description
 
+- A 2D game implemented in C++ using OpenGL 3.0
+
+
 ## Compile
 - First remove all object file by command 'make clean'.
 - Compile using simple 'make'.

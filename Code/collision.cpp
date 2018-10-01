@@ -16,12 +16,9 @@ void checkLaserMirrorCollision()
 {
   float tmp1,tmp2,x_coord,y_coord;
   typedef map<int,laser_class>::iterator it_type;
-//  printf("In checkLaserMirrorCollision\n");
-//cout << mirror1.angle << " " << mirror2.angle << " " << mirror3.angle << endl;
   for(it_type iterator = map_laser.begin(); iterator != map_laser.end(); iterator++)
   {
     // Check Collision Between mirror1 and laser
-    //cout << (iterator->second).angle << endl;
     tmp2 = mirror1.pos_y - mirror1.pos_x * tan((float)(90.0f+mirror1.angle)*M_PI/180.0f);
     x_coord = ((iterator->second).pos_x + (iterator->second).trans_x + 0.4*cos(((float )(iterator->second).angle)*M_PI/180.0f));
     y_coord = ((iterator->second).pos_y + (iterator->second).trans_y + 0.4*sin(((float )(iterator->second).angle)*M_PI/180.0f));
